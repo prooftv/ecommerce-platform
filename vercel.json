@@ -1,6 +1,3 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "cd apps/storefront && npm install && npm run build",
-  "outputDirectory": "apps/storefront/.next",
-  "installCommand": "echo 'dependencies installed in buildCommand'"
+  "framework": "nextjs"
 }
