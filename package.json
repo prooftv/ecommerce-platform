@@ -5,7 +5,7 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "turbo dev --filter=storefront",
-    "build": "turbo build --filter=storefront",
+    "build": "npm install --prefix apps/storefront && turbo build --filter=storefront",
     "lint": "turbo lint",
     "test": "turbo test --filter=storefront",
     "test:e2e": "turbo test:e2e --filter=storefront"
