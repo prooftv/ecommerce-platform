@@ -11,6 +11,7 @@
     "test:e2e": "turbo test:e2e --filter=storefront"
   },
   "devDependencies": {
+    "next": "^16",
     "turbo": "^2.5.4"
   }
 }
