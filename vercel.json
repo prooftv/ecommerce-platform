@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm install --prefix apps/storefront && npx turbo build --filter=storefront",
+  "buildCommand": "npm install --prefix storefront && npx turbo build --filter=storefront",
   "installCommand": "npm install",
-  "outputDirectory": "apps/storefront/.next"
+  "outputDirectory": "storefront/.next"
 }
