@@ -55,6 +55,11 @@ const nextConfig: NextConfig = {
         hostname: "**.trycloudflare.com",
         pathname: "/rails/active_storage/**",
       },
+      {
+        protocol: "https",
+        hostname: "*.onrender.com",
+        pathname: "/rails/active_storage/**",
+      },
     ],
   },
 };
