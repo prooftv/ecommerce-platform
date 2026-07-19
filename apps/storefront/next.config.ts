@@ -18,9 +18,6 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-dialog",
     ],
   },
-  turbopack: {
-    root: __dirname,
-  },
   cacheComponents: true,
   cacheLife: {
     tenMinutes: {
