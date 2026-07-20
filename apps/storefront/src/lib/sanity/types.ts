@@ -101,3 +101,55 @@ export interface SanityPage {
   body?: unknown[];
   seo?: SanitySeo;
 }
+
+export interface SanitySiteSettings {
+  _id: "siteSettings";
+  storeName: string;
+  storeTagline?: string;
+  logo?: SanityImage;
+  logoDark?: SanityImage;
+  favicon?: SanityImage;
+  socialLinks?: Array<{ platform: string; url: string }>;
+  contactEmail?: string;
+  contactPhone?: string;
+  address?: string;
+  footerCopyright?: string;
+  defaultSeo?: SanitySeo;
+  schemaOrg?: { legalName?: string; foundingYear?: number; url?: string };
+}
+
+export interface SanityTeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  photo?: SanityImage;
+  bio?: string;
+  socialLinks?: Array<{ platform: string; url: string }>;
+  order?: number;
+}
+
+export interface SanityTestimonial {
+  _id: string;
+  quote: string;
+  authorName: string;
+  authorTitle?: string;
+  authorPhoto?: SanityImage;
+  rating?: number;
+  featured?: boolean;
+  order?: number;
+}
+
+export interface SanityRedirect {
+  _id: string;
+  source: string;
+  destination: string;
+  permanent: boolean;
+}
+
+export interface SanityLandingPage {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  sections?: unknown[];
+  seo?: SanitySeo;
+}

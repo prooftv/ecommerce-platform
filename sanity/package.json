@@ -9,6 +9,7 @@
     "deploy-graphql": "sanity graphql deploy"
   },
   "dependencies": {
+    "@sanity/color-input": "^6.0.16",
     "@sanity/vision": "^3.0.0",
     "sanity": "^3.0.0",
     "styled-components": "^6.0.0"

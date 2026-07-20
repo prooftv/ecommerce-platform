@@ -8,18 +8,8 @@ export const announcementBar = defineType({
     defineField({ name: "text", title: "Message", type: "string", validation: (R) => R.required() }),
     defineField({ name: "href", title: "Link (optional)", type: "string" }),
     defineField({ name: "linkLabel", title: "Link label", type: "string" }),
-    defineField({
-      name: "backgroundColor",
-      title: "Background colour (hex)",
-      type: "string",
-      initialValue: "#111827",
-    }),
-    defineField({
-      name: "textColor",
-      title: "Text colour (hex)",
-      type: "string",
-      initialValue: "#ffffff",
-    }),
+    defineField({ name: "backgroundColor", title: "Background colour", type: "color", initialValue: { hex: "#111827" } }),
+    defineField({ name: "textColor", title: "Text colour", type: "color", initialValue: { hex: "#ffffff" } }),
     defineField({
       name: "dismissible",
       title: "Dismissible",

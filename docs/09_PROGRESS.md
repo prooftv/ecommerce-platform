@@ -51,12 +51,13 @@
 
 ---
 
-## Sprint 04 — Documentation
+## Sprint 04 — Documentation & Sanity Studio
 
 ### Completed
 ✅ `docs/README.md` — documentation index
 ✅ `docs/00_PROJECT_OVERVIEW.md`
 ✅ `docs/01_ARCHITECTURE.md`
+✅ `docs/02_SYSTEM_BOUNDARIES.md`
 ✅ `docs/02_MASTER_PROMPT.md`
 ✅ `docs/03_DEVELOPMENT_GUIDE.md`
 ✅ `docs/04_API_CONTRACTS.md`
@@ -68,9 +69,29 @@
 ✅ `docs/10_BACKLOG.md`
 ✅ `docs/11_DEPLOYMENT.md`
 ✅ `docs/12_INTEGRATIONS.md`
+✅ `docs/13_BACKEND_IMPLEMENTATION_GUIDE.md`
+✅ `PLATFORM_BLUEPRINT.md`
+
+## Sprint 05 — Sanity Integration
+
+### Completed
+✅ Sanity studio scaffolded at `sanity/`
+✅ Schemas: `siteSettings`, `homepage`, `blogPost`, `faq`, `page`, `landingPage`, `teamMember`, `testimonial`, `navigationMenu`, `announcementBar`, `redirect`, `seo`, `portableText`
+✅ Studio structure with grouped sidebar (Content, People, Site) and icons
+✅ `@sanity/color-input` plugin integrated
+✅ Storefront Sanity client (`src/lib/sanity/client.ts`) — server-side only
+✅ Full TypeScript types for all schemas (`src/lib/sanity/types.ts`)
+✅ GROQ queries with Next.js cache tags for all content types (`src/lib/sanity/queries.ts`)
+✅ `HeroSection` replaced with Sanity-driven version — static fallback, `next/image`, hotspot, overlay, accessible alt
+✅ `AnnouncementBar` server component — time-gated, session-dismissible
+✅ `AnnouncementBar` added to storefront layout
+✅ `generateHomeMetadata` extended with Sanity SEO fields + Twitter card
+✅ `cdn.sanity.io` added to Next.js image remote patterns
+✅ Sanity env vars added to `.env.local.example`
 
 ### Next
-- [ ] Sanity Studio setup (`sanity/`)
-- [ ] Integrate Sanity into `apps/storefront`
-- [ ] Replace static homepage with Sanity-driven content
+- [ ] Create Sanity project at sanity.io — get project ID
+- [ ] Add SANITY_PROJECT_ID to Vercel env vars
+- [ ] Deploy Sanity Studio
+- [ ] Seed homepage content in Studio
 - [ ] Seed demo products and categories in Spree

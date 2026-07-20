@@ -99,8 +99,8 @@ export const homepage = defineType({
         defineField({ name: "enabled", type: "boolean", title: "Show banner", initialValue: false }),
         defineField({ name: "text", type: "string", title: "Banner text" }),
         defineField({ name: "href", type: "string", title: "Link (optional)" }),
-        defineField({ name: "backgroundColor", type: "string", title: "Background colour (hex)", initialValue: "#000000" }),
-        defineField({ name: "textColor", type: "string", title: "Text colour (hex)", initialValue: "#ffffff" }),
+        defineField({ name: "backgroundColor", type: "color", title: "Background colour" }),
+        defineField({ name: "textColor", type: "color", title: "Text colour" }),
       ],
     }),
     defineField({

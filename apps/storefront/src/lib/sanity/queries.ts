@@ -4,8 +4,13 @@ import type {
   SanityBlogPost,
   SanityFaq,
   SanityHomepage,
+  SanityLandingPage,
   SanityNavigationMenu,
   SanityPage,
+  SanitySiteSettings,
+  SanityTeamMember,
+  SanityTestimonial,
+  SanityRedirect,
 } from "./types";
 
 // ─── Homepage ────────────────────────────────────────────────────────────────
@@ -120,5 +125,82 @@ export async function getPage(slug: string): Promise<SanityPage | null> {
     }`,
     { slug },
     { next: { revalidate: 300, tags: [`page:${slug}`] } }
+  );
+}
+
+// ─── Site Settings ───────────────────────────────────────────────────────────
+
+export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
+  if (!isSanityConfigured()) return null;
+  return sanityClient.fetch<SanitySiteSettings>(
+    `*[_type == "siteSettings" && _id == "siteSettings"][0]{
+      _id, storeName, storeTagline, footerCopyright,
+      contactEmail, contactPhone, address,
+      logo { ..., asset->{ _id, url }, alt },
+      logoDark { ..., asset->{ _id, url }, alt },
+      favicon { ..., asset->{ _id, url } },
+      socialLinks[] { platform, url },
+      defaultSeo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex },
+      schemaOrg { legalName, foundingYear, url }
+    }`,
+    {},
+    { next: { revalidate: 300, tags: ["siteSettings"] } }
+  );
+}
+
+// ─── Team ────────────────────────────────────────────────────────────────────
+
+export async function getTeamMembers(): Promise<SanityTeamMember[]> {
+  if (!isSanityConfigured()) return [];
+  return sanityClient.fetch<SanityTeamMember[]>(
+    `*[_type == "teamMember"] | order(order asc) {
+      _id, name, role, bio, order,
+      photo { ..., asset->{ _id, url }, alt },
+      socialLinks[] { platform, url }
+    }`,
+    {},
+    { next: { revalidate: 300, tags: ["team"] } }
+  );
+}
+
+// ─── Testimonials ────────────────────────────────────────────────────────────
+
+export async function getTestimonials(featuredOnly = false): Promise<SanityTestimonial[]> {
+  if (!isSanityConfigured()) return [];
+  const filter = featuredOnly
+    ? `*[_type == "testimonial" && featured == true]`
+    : `*[_type == "testimonial"]`;
+  return sanityClient.fetch<SanityTestimonial[]>(
+    `${filter} | order(order asc) {
+      _id, quote, authorName, authorTitle, rating, featured, order,
+      authorPhoto { ..., asset->{ _id, url }, alt }
+    }`,
+    {},
+    { next: { revalidate: 300, tags: ["testimonials"] } }
+  );
+}
+
+// ─── Redirects ───────────────────────────────────────────────────────────────
+
+export async function getRedirects(): Promise<SanityRedirect[]> {
+  if (!isSanityConfigured()) return [];
+  return sanityClient.fetch<SanityRedirect[]>(
+    `*[_type == "redirect"] { _id, source, destination, permanent }`,
+    {},
+    { next: { revalidate: 60, tags: ["redirects"] } }
+  );
+}
+
+// ─── Landing Pages ───────────────────────────────────────────────────────────
+
+export async function getLandingPage(slug: string): Promise<SanityLandingPage | null> {
+  if (!isSanityConfigured()) return null;
+  return sanityClient.fetch<SanityLandingPage>(
+    `*[_type == "landingPage" && slug.current == $slug][0]{
+      _id, title, slug, sections,
+      seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
+    }`,
+    { slug },
+    { next: { revalidate: 60, tags: [`landingPage:${slug}`] } }
   );
 }
