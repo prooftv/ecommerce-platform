@@ -4,9 +4,13 @@ import { HomeIcon } from "@sanity/icons/Home";
 import { LinkIcon } from "@sanity/icons/Link";
 import { UsersIcon } from "@sanity/icons/Users";
 import { colorInput } from "@sanity/color-input";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { scheduledPublishing } = require("@sanity/scheduled-publishing");
+import { table } from "@sanity/table";
 import { defineConfig } from "sanity";
 import { structureTool, type StructureResolver } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { media, mediaAssetSource } from "sanity-plugin-media";
 import { schemaTypes } from "@/lib/sanity/schemas";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "unconfigured";
@@ -73,6 +77,15 @@ export default defineConfig({
     structureTool({ structure }),
     visionTool({ defaultApiVersion: "2024-01-01" }),
     colorInput(),
+    media(),
+    table(),
+    scheduledPublishing(),
   ],
+  form: {
+    image: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      assetSources: (prev: any[]) => [...prev, mediaAssetSource],
+    },
+  },
   schema: { types: schemaTypes },
 });
