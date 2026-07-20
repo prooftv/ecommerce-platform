@@ -4,6 +4,83 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
+const getHostnameFromEnv = (value?: string): string | undefined => {
+  if (!value) return undefined;
+
+  try {
+    return new URL(value).hostname;
+  } catch {
+    return undefined;
+  }
+};
+
+const remotePatterns = [
+  {
+    protocol: "http" as const,
+    hostname: "localhost",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "**.vendo.dev",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "**.spree.sh",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "**.trycloudflare.com",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "*.onrender.com",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "*.r2.dev",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "*.cloudflarestorage.com",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "*.vercel.app",
+    pathname: "/rails/active_storage/**",
+  },
+  {
+    protocol: "https" as const,
+    hostname: "*.vercel.dev",
+    pathname: "/rails/active_storage/**",
+  },
+];
+
+const siteHostname = getHostnameFromEnv(process.env.NEXT_PUBLIC_SITE_URL);
+const spreeApiHostname = getHostnameFromEnv(process.env.SPREE_API_URL);
+
+if (siteHostname) {
+  remotePatterns.push({
+    protocol: "https" as const,
+    hostname: siteHostname,
+    pathname: "/rails/active_storage/**",
+  });
+}
+
+if (spreeApiHostname) {
+  remotePatterns.push({
+    protocol: "https" as const,
+    hostname: spreeApiHostname,
+    pathname: "/rails/active_storage/**",
+  });
+}
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["shop.lvh.me", "*.trycloudflare.com", "192.168.33.13"],
   env: {
@@ -31,33 +108,7 @@ const nextConfig: NextConfig = {
     dangerouslyAllowLocalIP: true, // Allow localhost images in development
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        pathname: "/rails/active_storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "**.vendo.dev",
-        pathname: "/rails/active_storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "**.spree.sh",
-        pathname: "/rails/active_storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "**.trycloudflare.com",
-        pathname: "/rails/active_storage/**",
-      },
-      {
-        protocol: "https",
-        hostname: "*.onrender.com",
-        pathname: "/rails/active_storage/**",
-      },
-    ],
+    remotePatterns,
   },
 };
 
