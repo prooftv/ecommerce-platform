@@ -19,9 +19,6 @@ import { platformWidget } from "@/lib/sanity/studio/PlatformWidget";
 import { analyticsWidget } from "@/lib/sanity/studio/AnalyticsWidget";
 import { schemaTypes } from "@/lib/sanity/schemas";
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { scheduledPublishing } = require("@sanity/scheduled-publishing");
-
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "unconfigured";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
@@ -108,8 +105,11 @@ export default defineConfig({
     colorInput(),
     media(),
     table(),
-    scheduledPublishing(),
   ],
+  scheduledPublishing: {
+    enabled: true,
+    inputDateTimeFormat: "MM/dd/yyyy h:mm a",
+  },
   form: {
     image: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

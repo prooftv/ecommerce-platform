@@ -27,7 +27,6 @@
     "@sanity/icons": "^5.1.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/preview-url-secret": "^4.0.8",
-    "@sanity/scheduled-publishing": "^0.1.14",
     "@sanity/table": "^3.1.10",
     "@sanity/vision": "^6.5.0",
     "@sentry/nextjs": "^10.38.0",
