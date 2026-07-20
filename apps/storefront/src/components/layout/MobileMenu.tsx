@@ -1,6 +1,7 @@
 "use client";
 
 import type { Category } from "@spree/sdk";
+import type { SanityNavItem } from "@/lib/sanity/types";
 import { ArrowLeft, Check, ChevronRight, User, X } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -29,14 +30,16 @@ function countryToFlag(countryCode: string): string {
 type PanelType =
   | { kind: "main" }
   | { kind: "category"; category: Category }
+  | { kind: "sanity"; label: string; children: Array<{ label: string; href: string }> }
   | { kind: "country" };
 
 interface MobileMenuProps {
   rootCategories: Category[];
   basePath: string;
+  navItems?: SanityNavItem[];
 }
 
-export function MobileMenu({ rootCategories, basePath }: MobileMenuProps) {
+export function MobileMenu({ rootCategories, basePath, navItems = [] }: MobileMenuProps) {
   const t = useTranslations("header");
   const [open, setOpen] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -191,9 +194,11 @@ export function MobileMenu({ rootCategories, basePath }: MobileMenuProps) {
             <span>
               {currentPanel.kind === "category"
                 ? currentPanel.category.name
-                : currentPanel.kind === "country"
-                  ? t("selectCountry")
-                  : ""}
+                : currentPanel.kind === "sanity"
+                  ? currentPanel.label
+                  : currentPanel.kind === "country"
+                    ? t("selectCountry")
+                    : ""}
             </span>
           </button>
           <Button
@@ -217,20 +222,53 @@ export function MobileMenu({ rootCategories, basePath }: MobileMenuProps) {
             }`}
           >
             <nav className="flex flex-col gap-1 px-4 flex-1 overflow-y-auto pt-2">
-              <Link
-                href={basePath || "/"}
-                onClick={() => setOpen(false)}
-                className={linkClass}
-              >
-                {t("home")}
-              </Link>
-              <Link
-                href={`${basePath}/products`}
-                onClick={() => setOpen(false)}
-                className={linkClass}
-              >
-                {t("allProducts")}
-              </Link>
+              {navItems.length > 0 ? (
+                navItems.map((item) =>
+                  item.children && item.children.length > 0 ? (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() =>
+                        pushPanel({
+                          kind: "sanity",
+                          label: item.label,
+                          children: item.children!,
+                        })
+                      }
+                      className={categoryButtonClass}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronRight className="w-4 h-4 text-gray-400" />
+                    </button>
+                  ) : (
+                    <Link
+                      key={item.label}
+                      href={item.href ?? basePath}
+                      onClick={() => setOpen(false)}
+                      className={linkClass}
+                    >
+                      {item.label}
+                    </Link>
+                  ),
+                )
+              ) : (
+                <>
+                  <Link
+                    href={basePath || "/"}
+                    onClick={() => setOpen(false)}
+                    className={linkClass}
+                  >
+                    {t("home")}
+                  </Link>
+                  <Link
+                    href={`${basePath}/products`}
+                    onClick={() => setOpen(false)}
+                    className={linkClass}
+                  >
+                    {t("allProducts")}
+                  </Link>
+                </>
+              )}
               {rootCategories.map((category) =>
                 category.children && category.children.length > 0 ? (
                   <button
@@ -289,6 +327,46 @@ export function MobileMenu({ rootCategories, basePath }: MobileMenuProps) {
               </SheetClose>
             </SheetFooter>
           </div>
+
+          {/* Sanity nav sub-panels */}
+          {panelStack.map((panel, index) => {
+            if (panel.kind !== "sanity") return null;
+            const isAnimatedIn = index <= animatedIndex;
+            let translateClass = "translate-x-full";
+            if (isAnimatedIn && index < panelStack.length - 1)
+              translateClass = "-translate-x-full";
+            else if (isAnimatedIn) translateClass = "translate-x-0";
+
+            return (
+              <div
+                key={`sanity-${panel.label}-${index}`}
+                className={`absolute inset-0 flex flex-col bg-white transition-transform duration-300 ease-in-out ${translateClass}`}
+              >
+                <div className="md:hidden px-4 py-2 border-b border-gray-200">
+                  <button
+                    type="button"
+                    onClick={popPanel}
+                    className="flex items-center gap-2 text-gray-700 hover:text-gray-900 py-2 text-base font-medium"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                    <span>{panel.label}</span>
+                  </button>
+                </div>
+                <nav className="flex flex-col gap-1 px-4 flex-1 overflow-y-auto pt-2">
+                  {panel.children.map((child) => (
+                    <Link
+                      key={child.label}
+                      href={child.href}
+                      onClick={() => handleOpenChange(false)}
+                      className={linkClass}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            );
+          })}
 
           {/* Category sub-panels — one for each level in the stack */}
           {panelStack.map((panel, index) => {
