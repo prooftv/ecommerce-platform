@@ -1,6 +1,7 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { createClient } from "@sanity/client";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -85,7 +86,31 @@ if (spreeApiHostname) {
   });
 }
 
+async function getSanityRedirects() {
+  const projectId = process.env.SANITY_PROJECT_ID;
+  if (!projectId) return [];
+  try {
+    const client = createClient({
+      projectId,
+      dataset: process.env.SANITY_DATASET ?? "production",
+      apiVersion: "2024-01-01",
+      useCdn: false,
+    });
+    const redirects = await client.fetch<Array<{ source: string; destination: string; permanent: boolean }>>(
+      `*[_type == "redirect"]{ source, destination, permanent }`
+    );
+    return redirects.map((r) => ({
+      source: r.source,
+      destination: r.destination,
+      permanent: r.permanent ?? false,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 const nextConfig: NextConfig = {
+  redirects: getSanityRedirects,
   allowedDevOrigins: ["shop.lvh.me", "*.trycloudflare.com", "192.168.33.13"],
   env: {
     NEXT_PUBLIC_SENTRY_DSN: process.env.SENTRY_DSN || "",
