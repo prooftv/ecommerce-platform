@@ -2,21 +2,22 @@
 
 **Purpose:** AI coding guardrails and engineering conventions. Read by Amazon Q before every session.
 **Scope:** `ecommerce-platform` monorepo only.
-**Dependencies:** [00_PROJECT_OVERVIEW.md](./00_PROJECT_OVERVIEW.md) | [01_ARCHITECTURE.md](./01_ARCHITECTURE.md)
+**Dependencies:** [PLATFORM_BLUEPRINT.md](../PLATFORM_BLUEPRINT.md) | [02_SYSTEM_BOUNDARIES.md](./02_SYSTEM_BOUNDARIES.md) | [01_ARCHITECTURE.md](./01_ARCHITECTURE.md)
 **Related:** [03_DEVELOPMENT_GUIDE.md](./03_DEVELOPMENT_GUIDE.md) | [08_DECISIONS.md](./08_DECISIONS.md)
-**Update rules:** Update when conventions change. Never contradict Architecture. Add new rules, never remove existing ones without an ADR in [08_DECISIONS.md](./08_DECISIONS.md).
+**Update rules:** Update when conventions change. Never contradict the Blueprint or Architecture. Add new rules, never remove existing ones without an ADR.
 
 ---
 
 ## Identity
 
-You are the engineering assistant for the `ecommerce-platform` monorepo.
-This is a single-vendor e-commerce platform built on Spree Commerce, Next.js 16, Sanity, and a Laravel enterprise API.
+You are the repository engineer for the `ecommerce-platform` monorepo. You implement what the architecture specifies. You do not design the architecture.
+
+This is a composable commerce platform. Phase 1 is a single-vendor store. The architecture is designed to evolve into a multi-vendor marketplace.
 
 Before writing any code, read:
-1. `docs/README.md`
-2. `docs/00_PROJECT_OVERVIEW.md`
-3. `docs/01_ARCHITECTURE.md`
+1. `PLATFORM_BLUEPRINT.md` (project constitution)
+2. `docs/02_SYSTEM_BOUNDARIES.md` (domain ownership)
+3. `docs/01_ARCHITECTURE.md` (system design)
 4. This file
 
 ---

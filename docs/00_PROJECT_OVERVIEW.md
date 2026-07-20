@@ -1,16 +1,20 @@
 # 00 — Project Overview
 
-**Purpose:** Single source of truth for project vision, ownership, phases, and goals.
+**Purpose:** Project vision, ownership, phases, and goals.
 **Scope:** Both repositories. All teams.
-**Dependencies:** None. This document has no upstream dependencies.
-**Related:** [01_ARCHITECTURE.md](./01_ARCHITECTURE.md) | [08_DECISIONS.md](./08_DECISIONS.md) | [09_PROGRESS.md](./09_PROGRESS.md)
-**Update rules:** Update when project scope, ownership, or phases change. Never contradict this document in any other file — update this one instead.
+**Dependencies:** [PLATFORM_BLUEPRINT.md](../PLATFORM_BLUEPRINT.md)
+**Related:** [01_ARCHITECTURE.md](./01_ARCHITECTURE.md) | [02_SYSTEM_BOUNDARIES.md](./02_SYSTEM_BOUNDARIES.md) | [08_DECISIONS.md](./08_DECISIONS.md) | [09_PROGRESS.md](./09_PROGRESS.md)
+**Update rules:** Update when project scope, ownership, or phases change. The Platform Blueprint is the constitutional authority — this document must remain consistent with it.
 
 ---
 
 ## What we are building
 
-A single-vendor e-commerce platform for a South African client. The platform serves three audiences:
+A composable commerce platform whose first deployment is a single-vendor store, designed to evolve into a multi-vendor marketplace without major architectural changes.
+
+See [PLATFORM_BLUEPRINT.md](../PLATFORM_BLUEPRINT.md) for the full platform vision and evolution strategy.
+
+The platform serves three audiences:
 
 | Audience | Interface | Repository |
 |---|---|---|
@@ -80,10 +84,13 @@ A single-vendor e-commerce platform for a South African client. The platform ser
 
 ## Guiding principles
 
-1. Spree is the commerce engine. Never replace it with custom code.
-2. Extend, never rewrite.
-3. Preserve the upstream upgrade path at all times.
-4. Laravel owns enterprise logic. Spree owns commerce. Sanity owns content.
-5. The Operations Dashboard consumes APIs only — no business logic.
-6. Shared packages prevent duplication between apps.
-7. Documentation is source code. Keep it consistent.
+See [PLATFORM_BLUEPRINT.md](../PLATFORM_BLUEPRINT.md) Section 2 for the full set of non-negotiable principles.
+
+Summary:
+1. Spree owns commerce. Never duplicate commerce logic elsewhere.
+2. Laravel owns business capabilities. Never move workflows into the frontend.
+3. Sanity owns content. Never use Spree for editorial content.
+4. Next.js owns presentation only. Business logic belongs to backend services.
+5. The platform is API-first. Every capability is consumable through a well-defined API.
+6. Design for marketplace evolution. Phase 1 data models must support Phase 2 without a rewrite.
+7. Preserve upgrade paths. Spree core is never modified.

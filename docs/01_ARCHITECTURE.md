@@ -2,9 +2,9 @@
 
 **Purpose:** Authoritative source of truth for system design, repository structure, and data ownership.
 **Scope:** Both repositories.
-**Dependencies:** [00_PROJECT_OVERVIEW.md](./00_PROJECT_OVERVIEW.md)
-**Related:** [04_API_CONTRACTS.md](./04_API_CONTRACTS.md) | [06_SANITY_MODEL.md](./06_SANITY_MODEL.md) | [11_DEPLOYMENT.md](./11_DEPLOYMENT.md)
-**Update rules:** This document wins all conflicts. Update only when a fundamental architectural decision changes. Record the reason in [08_DECISIONS.md](./08_DECISIONS.md).
+**Dependencies:** [PLATFORM_BLUEPRINT.md](../PLATFORM_BLUEPRINT.md) | [00_PROJECT_OVERVIEW.md](./00_PROJECT_OVERVIEW.md)
+**Related:** [02_SYSTEM_BOUNDARIES.md](./02_SYSTEM_BOUNDARIES.md) | [04_API_CONTRACTS.md](./04_API_CONTRACTS.md) | [11_DEPLOYMENT.md](./11_DEPLOYMENT.md)
+**Update rules:** This document wins all conflicts after the Platform Blueprint. Update only when a fundamental architectural decision changes. Record the reason in [08_DECISIONS.md](./08_DECISIONS.md).
 
 ---
 
