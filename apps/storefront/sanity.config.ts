@@ -3,15 +3,24 @@ import { DocumentIcon } from "@sanity/icons/Document";
 import { HomeIcon } from "@sanity/icons/Home";
 import { LinkIcon } from "@sanity/icons/Link";
 import { UsersIcon } from "@sanity/icons/Users";
+import {
+  dashboardTool,
+  projectInfoWidget,
+  projectUsersWidget,
+} from "@sanity/dashboard";
 import { colorInput } from "@sanity/color-input";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { scheduledPublishing } = require("@sanity/scheduled-publishing");
 import { table } from "@sanity/table";
 import { defineConfig } from "sanity";
 import { structureTool, type StructureResolver } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { media, mediaAssetSource } from "sanity-plugin-media";
+import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list";
+import { platformWidget } from "@/lib/sanity/studio/PlatformWidget";
+import { analyticsWidget } from "@/lib/sanity/studio/AnalyticsWidget";
 import { schemaTypes } from "@/lib/sanity/schemas";
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { scheduledPublishing } = require("@sanity/scheduled-publishing");
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "unconfigured";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
@@ -74,6 +83,26 @@ export default defineConfig({
   projectId,
   dataset,
   plugins: [
+    dashboardTool({
+      widgets: [
+        platformWidget,
+        analyticsWidget,
+        documentListWidget({
+          title: "Recent Blog Posts",
+          order: "_createdAt desc",
+          types: ["blogPost"],
+          layout: { width: "medium" },
+        }),
+        documentListWidget({
+          title: "Recent Pages",
+          order: "_createdAt desc",
+          types: ["page", "landingPage"],
+          layout: { width: "medium" },
+        }),
+        projectInfoWidget(),
+        projectUsersWidget(),
+      ],
+    }),
     structureTool({ structure }),
     visionTool({ defaultApiVersion: "2024-01-01" }),
     colorInput(),
