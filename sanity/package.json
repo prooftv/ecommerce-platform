@@ -1,0 +1,19 @@
+{
+  "name": "@ecommerce/sanity",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev --port 3333",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^3.0.0",
+    "sanity": "^3.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

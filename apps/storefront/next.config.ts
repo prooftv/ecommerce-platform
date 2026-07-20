@@ -60,6 +60,10 @@ const remotePatterns = [
     hostname: "*.vercel.dev",
     pathname: "/rails/active_storage/**",
   },
+  {
+    protocol: "https" as const,
+    hostname: "cdn.sanity.io",
+  },
 ];
 
 const siteHostname = getHostnameFromEnv(process.env.NEXT_PUBLIC_SITE_URL);

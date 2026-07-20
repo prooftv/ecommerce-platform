@@ -1,5 +1,7 @@
 import type { Category } from "@spree/sdk";
 import Link from "next/link";
+import { Suspense } from "react";
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { getCategories } from "@/lib/data/categories";
@@ -51,6 +53,9 @@ export default async function StorefrontLayout({
 
   return (
     <>
+      <Suspense fallback={null}>
+        <AnnouncementBar />
+      </Suspense>
       <Header
         rootCategories={rootCategories}
         basePath={basePath}
@@ -61,7 +66,7 @@ export default async function StorefrontLayout({
           <CategoryLinks categories={rootCategories} basePath={basePath} />
         </nav>
       )}
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">{children}</main>
       <Footer
         rootCategories={rootCategories}
         basePath={basePath}
