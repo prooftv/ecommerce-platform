@@ -5,12 +5,8 @@ const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET ?? "production";
 const apiVersion = "2024-01-01";
 
-/**
- * Server-side Sanity client.
- * Uses CDN for reads in production. Token never reaches the browser.
- */
 export const sanityClient = createClient({
-  projectId,
+  projectId: projectId ?? "unconfigured",
   dataset,
   apiVersion,
   useCdn: process.env.NODE_ENV === "production",
@@ -26,7 +22,6 @@ export function urlFor(source: any) {
   return builder.image(source);
 }
 
-/** Returns true only when SANITY_PROJECT_ID is configured. */
 export function isSanityConfigured(): boolean {
   return Boolean(projectId);
 }
