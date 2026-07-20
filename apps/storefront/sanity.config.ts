@@ -75,6 +75,7 @@ const structure: StructureResolver = (S) =>
     ]);
 
 export default defineConfig({
+  basePath: "/studio",
   name: "ecommerce-platform",
   title: "Ecommerce Platform",
   projectId,
