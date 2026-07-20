@@ -1,4 +1,8 @@
-import { CogIcon, DocumentIcon, HomeIcon, LinkIcon, UsersIcon } from "@sanity/icons";
+import { CogIcon } from "@sanity/icons/Cog";
+import { DocumentIcon } from "@sanity/icons/Document";
+import { HomeIcon } from "@sanity/icons/Home";
+import { LinkIcon } from "@sanity/icons/Link";
+import { UsersIcon } from "@sanity/icons/Users";
 import type { StructureResolver } from "sanity/structure";
 
 export const structure: StructureResolver = (S) =>

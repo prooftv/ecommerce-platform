@@ -1,9 +1,13 @@
-import { CogIcon, DocumentIcon, HomeIcon, LinkIcon, UsersIcon } from "@sanity/icons";
+import { CogIcon } from "@sanity/icons/Cog";
+import { DocumentIcon } from "@sanity/icons/Document";
+import { HomeIcon } from "@sanity/icons/Home";
+import { LinkIcon } from "@sanity/icons/Link";
+import { UsersIcon } from "@sanity/icons/Users";
 import { colorInput } from "@sanity/color-input";
 import { defineConfig } from "sanity";
 import { structureTool, type StructureResolver } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
-import { schemaTypes } from "../../sanity/schemas";
+import { schemaTypes } from "@/lib/sanity/schemas";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
