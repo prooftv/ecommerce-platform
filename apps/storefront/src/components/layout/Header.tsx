@@ -8,6 +8,8 @@ import { CartButton } from "@/components/layout/CartButton";
 import { SearchToggle } from "@/components/layout/SearchToggle";
 import { Button } from "@/components/ui/button";
 import { getStoreName } from "@/lib/store";
+import type { SanitySiteSettings } from "@/lib/sanity/types";
+import { urlFor } from "@/lib/sanity/client";
 
 const LazyMobileMenu = dynamic(
   () =>
@@ -41,14 +43,19 @@ interface HeaderProps {
   rootCategories: Category[];
   basePath: string;
   locale: Locale;
+  siteSettings?: SanitySiteSettings | null;
 }
 
 export async function Header({
   rootCategories,
   basePath,
   locale,
+  siteSettings,
 }: HeaderProps) {
   const t = await getTranslations({ locale, namespace: "header" });
+  const logoAsset = siteSettings?.logo ?? siteSettings?.logoDark;
+  const logoUrl = logoAsset ? urlFor(logoAsset).height(64).url() : null;
+  const logoAlt = (logoAsset as { alt?: string } | undefined)?.alt ?? (siteSettings?.storeName ?? getStoreName());
 
   return (
     <SearchToggle
@@ -58,16 +65,29 @@ export async function Header({
       }
       center={
         <Link href={basePath || "/"} className="flex items-center min-w-0">
-          <Image
-            src="/spree.png"
-            alt={storeName}
-            width={90}
-            height={32}
-            className="max-w-full object-contain"
-            style={{ width: "auto", height: "auto" }}
-            fetchPriority="high"
-            loading="eager"
-          />
+          {logoUrl ? (
+            <Image
+              src={logoUrl}
+              alt={logoAlt}
+              width={90}
+              height={32}
+              className="max-w-full object-contain"
+              style={{ width: "auto", height: "auto" }}
+              fetchPriority="high"
+              loading="eager"
+            />
+          ) : (
+            <Image
+              src="/spree.png"
+              alt={logoAlt}
+              width={90}
+              height={32}
+              className="max-w-full object-contain"
+              style={{ width: "auto", height: "auto" }}
+              fetchPriority="high"
+              loading="eager"
+            />
+          )}
         </Link>
       }
       rightStart={

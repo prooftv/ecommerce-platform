@@ -5,6 +5,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { getCategories } from "@/lib/data/categories";
+import { getSiteSettings } from "@/lib/sanity/queries";
 
 interface StorefrontLayoutProps {
   children: React.ReactNode;
@@ -41,15 +42,15 @@ export default async function StorefrontLayout({
   const { country, locale } = await params;
   const basePath = `/${country}/${locale}`;
 
-  const rootCategories = await getCategories({
-    depth_eq: 0,
-    expand: ["children.children"],
-  })
-    .then((res) => res.data)
-    .catch((error) => {
-      console.error("StorefrontLayout: failed to load categories", error);
-      return [] as Category[];
-    });
+  const [rootCategories, siteSettings] = await Promise.all([
+    getCategories({ depth_eq: 0, expand: ["children.children"] })
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error("StorefrontLayout: failed to load categories", error);
+        return [] as Category[];
+      }),
+    getSiteSettings().catch(() => null),
+  ]);
 
   return (
     <>
@@ -60,6 +61,7 @@ export default async function StorefrontLayout({
         rootCategories={rootCategories}
         basePath={basePath}
         locale={locale as Locale}
+        siteSettings={siteSettings}
       />
       {rootCategories.length > 0 && (
         <nav aria-label="Category navigation" className="sr-only">
@@ -71,6 +73,7 @@ export default async function StorefrontLayout({
         rootCategories={rootCategories}
         basePath={basePath}
         locale={locale as Locale}
+        siteSettings={siteSettings}
       />
     </>
   );
