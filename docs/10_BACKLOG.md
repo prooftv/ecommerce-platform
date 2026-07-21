@@ -21,7 +21,7 @@
 - [x] Wire `navigationMenu` into header desktop nav and mobile menu
 - [x] Sanity redirects fetched at build time in `next.config.ts`
 - [x] Configure Sanity environment variables on Vercel
-- [ ] Add FAQ page route (`/faq`)
+- [x] Add FAQ page route (`/faq`)
 - [ ] Implement Sanity Preview Mode (draft content in Studio)
 
 ---

@@ -34,6 +34,8 @@ The Spree backend is owned primarily by Mzo. This monorepo is the frontend platf
 | 11 | [11_DEPLOYMENT.md](./11_DEPLOYMENT.md) | Deployment pipeline, environment variables |
 | 12 | [12_INTEGRATIONS.md](./12_INTEGRATIONS.md) | External services, credentials map |
 | 13 | [13_BACKEND_IMPLEMENTATION_GUIDE.md](./13_BACKEND_IMPLEMENTATION_GUIDE.md) | Guide for Mzo — API standards, domain map |
+| 14 | [14_UPSTREAM_DIVERGENCE.md](./14_UPSTREAM_DIVERGENCE.md) | Divergence from upstream spree/storefront |
+| 15 | [15_GROQ_QUERIES.md](./15_GROQ_QUERIES.md) | Canonical GROQ queries for all Sanity content types |
 
 ## Conflict resolution
 

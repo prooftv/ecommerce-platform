@@ -31,7 +31,7 @@ All routes are prefixed with `[country]/[locale]` (e.g. `/za/en/`, `/us/en/`).
 | `/[country]/[locale]/policies` | Store policies | Spree CMS |
 | `/[country]/[locale]/blog` | Blog listing | Sanity (Phase 3) |
 | `/[country]/[locale]/blog/[slug]` | Blog post | Sanity (Phase 3) |
-| `/[country]/[locale]/faqs` | FAQs | Sanity (Phase 3) |
+| `/[country]/[locale]/faq` | FAQs | Sanity (Phase 3) |
 | `/[country]/[locale]/about` | About page | Sanity (Phase 3) |
 
 ### API routes (storefront)
