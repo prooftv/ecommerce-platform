@@ -172,3 +172,23 @@ This applies to all platform services going forward:
 - Deterministic builds — `generateStaticParams` always has data
 - Consistent SSG — blog/pages pre-rendered at build time
 - New client deployments only change env vars, not source code
+
+---
+
+## ADR-011 — Remove `cacheComponents` experimental flag
+
+**Decision:** `cacheComponents: true` removed from `next.config.ts`.
+**Date:** 2025-07
+**Status:** Accepted
+
+**Reason:**
+
+`cacheComponents` is a Turbopack-specific experimental feature that pre-renders React Server Components into a build-time cache. It enforces that every `generateStaticParams` function returns at least one result — failing the build otherwise.
+
+This constraint is incompatible with CMS-driven routes where content may legitimately be empty at build time (e.g. a blog with no posts yet). The correct behaviour for those routes is on-demand ISR, not a build failure.
+
+**Consequences:**
+- Build succeeds regardless of CMS content state
+- `generateStaticParams` on blog/[slug] pre-renders posts that exist at build time; new posts are rendered on first request via ISR
+- `cacheLife` configuration is retained for use with `use cache` directives
+- Re-evaluate `cacheComponents` when it exits experimental status and its constraints are better documented

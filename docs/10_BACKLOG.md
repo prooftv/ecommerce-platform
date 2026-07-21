@@ -10,14 +10,19 @@
 
 ## Phase 3 — Content Layer (Next)
 
-- [ ] Initialise Sanity Studio in `sanity/`
-- [ ] Define schemas: homepage, hero, blogPost, faq, page
-- [ ] Integrate `@sanity/client` into `apps/storefront`
-- [ ] Replace static homepage with Sanity-driven content
-- [ ] Add blog listing and post pages
-- [ ] Add FAQ page
-- [ ] Add About page
-- [ ] Configure Sanity environment variables on Vercel
+- [x] Initialise Sanity Studio in `sanity/`
+- [x] Define schemas: homepage, hero, blogPost, faq, page, landingPage, teamMember, testimonial, navigationMenu, announcementBar, redirect, seo
+- [x] Integrate `@sanity/client` into `apps/storefront`
+- [x] Replace static homepage with Sanity-driven content
+- [x] Add blog listing and post pages
+- [x] Add CMS pages (`/pages/[slug]`)
+- [x] Add landing pages (`/lp/[slug]`)
+- [x] Wire `siteSettings` into header logo and footer (social links, copyright, tagline)
+- [x] Wire `navigationMenu` into header desktop nav and mobile menu
+- [x] Sanity redirects fetched at build time in `next.config.ts`
+- [x] Configure Sanity environment variables on Vercel
+- [ ] Add FAQ page route (`/faq`)
+- [ ] Implement Sanity Preview Mode (draft content in Studio)
 
 ---
 

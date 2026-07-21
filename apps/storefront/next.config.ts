@@ -87,12 +87,12 @@ if (spreeApiHostname) {
 }
 
 async function getSanityRedirects() {
-  const projectId = process.env.SANITY_PROJECT_ID;
-  if (!projectId) return [];
+  const projectId =
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs";
   try {
     const client = createClient({
       projectId,
-      dataset: process.env.SANITY_DATASET ?? "production",
+      dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
       apiVersion: "2024-01-01",
       useCdn: false,
     });
@@ -124,7 +124,6 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-dialog",
     ],
   },
-  cacheComponents: true,
   cacheLife: {
     tenMinutes: {
       stale: 300, // 5 minutes client stale window

@@ -89,9 +89,28 @@
 ✅ `cdn.sanity.io` added to Next.js image remote patterns
 ✅ Sanity env vars added to `.env.local.example`
 
+## Sprint 06 — Sanity Content Routes & Configuration
+
+### Completed
+✅ Sanity Studio embedded at `/studio` (Next.js dynamic import, `ssr: false`)
+✅ Middleware updated to exclude `/studio` from locale redirect
+✅ Dashboard widgets: `PlatformWidget`, `AnalyticsWidget`, document lists
+✅ Blog index (`/blog`) and post detail (`/blog/[slug]`) with `generateStaticParams`, canonical URL, JSON-LD
+✅ CMS pages (`/pages/[slug]`) with PortableText
+✅ Landing pages (`/lp/[slug]`) with sections array renderer
+✅ Sanity redirects fetched at build time in `next.config.ts`
+✅ `siteSettings` wired into header logo and footer (social links, copyright, tagline)
+✅ `navigationMenu` wired into header desktop nav (CSS hover dropdowns) and mobile menu (slide panels)
+✅ `@portabletext/react` installed
+✅ Sanity project ID moved to env var with default (`NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs"`)
+✅ `isSanityConfigured()` removed — Sanity is a mandatory platform service (ADR-010)
+✅ All `isSanityConfigured()` guards removed from queries
+✅ `generateStaticParams` restored for blog/[slug] — builds correctly with `cacheComponents`
+✅ `imageUrlBuilder` deprecation fixed (`createImageUrlBuilder`)
+✅ ADR-010 documented in `08_DECISIONS.md`
+✅ Local-first development principle added to `03_DEVELOPMENT_GUIDE.md`
+
 ### Next
-- [ ] Create Sanity project at sanity.io — get project ID
-- [ ] Add SANITY_PROJECT_ID to Vercel env vars
-- [ ] Deploy Sanity Studio
-- [ ] Seed homepage content in Studio
-- [ ] Seed demo products and categories in Spree
+- [ ] FAQ page route (`/faq`)
+- [ ] Sanity Preview Mode
+- [ ] Phase 4: UI customisation via `packages/ui`

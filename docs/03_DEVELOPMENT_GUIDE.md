@@ -8,6 +8,38 @@
 
 ---
 
+## Engineering principles
+
+### Local-first development
+
+The platform must run with the minimum possible configuration on a fresh clone.
+
+```bash
+git clone https://github.com/prooftv/ecommerce-platform
+cd ecommerce-platform
+npm install
+npm run dev
+```
+
+This must produce a working storefront — Spree, Sanity, and all platform services — with no environment variables set beyond `SPREE_API_URL` and `SPREE_PUBLISHABLE_KEY`.
+
+Rules that enforce this:
+- Public service identifiers (Sanity project ID, dataset) ship with hardcoded defaults and are overridable via env vars
+- Secrets (`SANITY_API_TOKEN`, `SPREE_PUBLISHABLE_KEY`) are env-var-only with no default
+- No feature is gated behind a missing env var unless that feature is explicitly optional
+
+See ADR-010 in [08_DECISIONS.md](./08_DECISIONS.md) for the configuration classification.
+
+### Configuration classification
+
+| Class | Pattern | Example |
+|---|---|---|
+| Compile-time constant | Hardcoded | API version, default locale |
+| Public identifier | Env var with default | `NEXT_PUBLIC_SANITY_PROJECT_ID` |
+| Secret | Env var only, no default | `SANITY_API_TOKEN`, `SPREE_PUBLISHABLE_KEY` |
+
+---
+
 ## Prerequisites
 
 - Node.js 20+
