@@ -1,6 +1,6 @@
 "use server";
 
-import { cacheLife, cacheTag } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { getClient, getLocaleOptions } from "@/lib/spree";
 
 export async function getCountries() {
@@ -8,17 +8,11 @@ export async function getCountries() {
   return getClient().countries.list(options);
 }
 
-async function cachedGetCountry(
-  iso: string,
-  options: { locale?: string; country?: string },
-) {
-  "use cache: remote";
-  cacheLife("hours");
-  cacheTag("country", `country-${iso}`);
-  return getClient().countries.get(iso, { expand: ["states"] }, options);
-}
-
 export async function getCountry(iso: string) {
   const options = await getLocaleOptions();
-  return cachedGetCountry(iso, options);
+  return unstable_cache(
+    () => getClient().countries.get(iso, { expand: ["states"] }, options),
+    ["country", iso, options.locale ?? ""],
+    { revalidate: 3600, tags: ["country", `country-${iso}`] },
+  )();
 }

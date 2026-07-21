@@ -192,3 +192,34 @@ This constraint is incompatible with CMS-driven routes where content may legitim
 - `generateStaticParams` on blog/[slug] pre-renders posts that exist at build time; new posts are rendered on first request via ISR
 - `cacheLife` configuration is retained for use with `use cache` directives
 - Re-evaluate `cacheComponents` when it exits experimental status and its constraints are better documented
+
+---
+
+## ADR-012 — Replace experimental `use cache` directives with `unstable_cache`
+
+**Decision:** Remove all `"use cache: remote"`, `cacheLife()`, and `cacheTag()` usages. Replace with `unstable_cache` from `next/cache`.
+**Date:** 2025-07
+**Status:** Accepted
+
+**Reason:**
+
+The Spree storefront upstream adopted Next.js experimental `cacheComponents` + `"use cache: remote"` directives. These four APIs (`cacheComponents`, `"use cache: remote"`, `cacheLife`, `cacheTag`) are a coupled experimental system — removing one breaks the others.
+
+Per ADR-011, `cacheComponents` was removed because it requires non-empty `generateStaticParams` at build time, which conflicts with CMS-driven routes. The remaining experimental directives therefore had to be replaced.
+
+**Replacement:**
+
+`unstable_cache` is the stable Next.js API for caching arbitrary async functions with tags and revalidation. It has been available since Next.js 14 and is the documented approach for caching SDK/API calls that are not raw `fetch` requests.
+
+Cache semantics are preserved:
+- `"hours"` → `revalidate: 3600`
+- `"tenMinutes"` → `revalidate: 600`
+- `"minutes"` → `revalidate: 60`
+- `cacheTag(...)` → `tags: [...]` in `unstable_cache` options
+
+**Principle applied:** Stable over experimental (see `03_DEVELOPMENT_GUIDE.md`).
+
+**Acceptance criteria for reintroduction of `use cache`:**
+- Feature exits experimental/canary status
+- `cacheComponents` no longer requires non-empty `generateStaticParams`
+- Measurable performance benefit over `unstable_cache` is demonstrated

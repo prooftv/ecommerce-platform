@@ -124,13 +124,6 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-dialog",
     ],
   },
-  cacheLife: {
-    tenMinutes: {
-      stale: 300, // 5 minutes client stale window
-      revalidate: 600, // 10 minutes until background revalidation
-      expire: 3600, // 1 hour max before recompute on idle entries
-    },
-  },
   images: {
     qualities: [25, 50, 75, 85, 100],
     dangerouslyAllowLocalIP: true, // Allow localhost images in development
