@@ -2,22 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { getBlogPost, getBlogPosts } from "@/lib/sanity/queries";
+import { getBlogPost } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/client";
 import { buildCanonicalUrl } from "@/lib/seo";
 import { getStoreUrl } from "@/lib/store";
 
 interface Props {
   params: Promise<{ country: string; locale: string; slug: string }>;
-}
-
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const posts = await getBlogPosts(100);
-  const params = posts.map((p) => ({ slug: p.slug.current }));
-  // Cache Components requires at least one result; placeholder is caught by notFound() at runtime
-  return params.length > 0 ? params : [{ slug: "__placeholder__" }];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
