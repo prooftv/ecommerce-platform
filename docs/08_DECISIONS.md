@@ -177,6 +177,8 @@ This applies to all platform services going forward:
 
 ## ADR-011 — Remove `cacheComponents` experimental flag
 
+**Superseded by:** ADR-012 (implementation consequence)
+
 **Decision:** `cacheComponents: true` removed from `next.config.ts`.
 **Date:** 2025-07
 **Status:** Accepted
@@ -196,6 +198,8 @@ This constraint is incompatible with CMS-driven routes where content may legitim
 ---
 
 ## ADR-012 — Replace experimental `use cache` directives with `unstable_cache`
+
+**Depends on:** ADR-011 (ADR-012 is the implementation consequence of ADR-011)
 
 **Decision:** Remove all `"use cache: remote"`, `cacheLife()`, and `cacheTag()` usages. Replace with `unstable_cache` from `next/cache`.
 **Date:** 2025-07
