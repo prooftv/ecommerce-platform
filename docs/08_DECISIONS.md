@@ -134,3 +134,41 @@
 - Frontend platform evolves independently
 - Clear ownership boundary: Mzo owns backend, Bheki owns frontend
 - Spree can be upgraded without touching frontend code
+
+---
+
+## ADR-010 — Sanity is a mandatory platform service
+
+**Decision:** Sanity CMS is a required dependency. The application does not support running without it.
+**Date:** 2025-07
+**Status:** Accepted
+
+**Reason:**
+
+Sanity drives site settings, navigation, content pages, blog, announcements, and redirects. Treating it as optional produced silent failures (guards returning empty arrays/nulls) and prevented `generateStaticParams` from working correctly with `cacheComponents`.
+
+**Configuration pattern:**
+
+Public, non-secret identifiers use env vars with hardcoded defaults so the platform works on a fresh clone with zero configuration:
+
+```ts
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs";
+const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET   ?? "production";
+```
+
+Secret values (`SANITY_API_TOKEN`) remain env-var-only with no default.
+
+**Principle established:**
+
+> Platform services are mandatory. Deployment-specific configuration is externalized through environment variables with safe defaults where appropriate.
+
+This applies to all platform services going forward:
+- ✅ Hardcode: API versions, default locales, pagination sizes, compile-time feature flags
+- ⚙️ Env var with default: project IDs, dataset names, public analytics IDs, Stripe publishable key
+- 🔒 Env var only (no default): API tokens, secrets, private keys
+
+**Consequences:**
+- Simpler code — no `isSanityConfigured()` guards
+- Deterministic builds — `generateStaticParams` always has data
+- Consistent SSG — blog/pages pre-rendered at build time
+- New client deployments only change env vars, not source code

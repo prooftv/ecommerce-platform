@@ -19,7 +19,7 @@ import { platformWidget } from "@/lib/sanity/studio/PlatformWidget";
 import { analyticsWidget } from "@/lib/sanity/studio/AnalyticsWidget";
 import { schemaTypes } from "@/lib/sanity/schemas";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "unconfigured";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
 const structure: StructureResolver = (S) =>
