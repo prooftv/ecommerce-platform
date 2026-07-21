@@ -1,4 +1,4 @@
-import { isSanityConfigured, sanityClient } from "./client";
+import { sanityClient } from "./client";
 import type {
   SanityAnnouncementBar,
   SanityBlogPost,
@@ -16,7 +16,6 @@ import type {
 // ─── Homepage ────────────────────────────────────────────────────────────────
 
 export async function getHomepage(): Promise<SanityHomepage | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanityHomepage>(
     `*[_type == "homepage" && _id == "homepage"][0]{
       _id,
@@ -42,7 +41,6 @@ export async function getHomepage(): Promise<SanityHomepage | null> {
 // ─── Announcement bar ────────────────────────────────────────────────────────
 
 export async function getActiveAnnouncementBar(): Promise<SanityAnnouncementBar | null> {
-  if (!isSanityConfigured()) return null;
   const now = new Date().toISOString();
   return sanityClient.fetch<SanityAnnouncementBar>(
     `*[_type == "announcementBar" && active == true
@@ -59,7 +57,6 @@ export async function getActiveAnnouncementBar(): Promise<SanityAnnouncementBar 
 export async function getNavigationMenu(
   identifier: string
 ): Promise<SanityNavigationMenu | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanityNavigationMenu>(
     `*[_type == "navigationMenu" && identifier == $identifier][0]{
       _id, identifier,
@@ -73,7 +70,6 @@ export async function getNavigationMenu(
 // ─── Blog ────────────────────────────────────────────────────────────────────
 
 export async function getBlogPosts(limit = 10): Promise<SanityBlogPost[]> {
-  if (!isSanityConfigured()) return [];
   return sanityClient.fetch<SanityBlogPost[]>(
     `*[_type == "blogPost"] | order(publishedAt desc) [0...$limit] {
       _id, title, slug, publishedAt, excerpt, categories,
@@ -87,7 +83,6 @@ export async function getBlogPosts(limit = 10): Promise<SanityBlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<SanityBlogPost | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanityBlogPost>(
     `*[_type == "blogPost" && slug.current == $slug][0]{
       _id, title, slug, publishedAt, excerpt, categories, body,
@@ -103,7 +98,6 @@ export async function getBlogPost(slug: string): Promise<SanityBlogPost | null> 
 // ─── FAQs ────────────────────────────────────────────────────────────────────
 
 export async function getFaqs(category?: string): Promise<SanityFaq[]> {
-  if (!isSanityConfigured()) return [];
   const filter = category
     ? `*[_type == "faq" && category == $category]`
     : `*[_type == "faq"]`;
@@ -117,7 +111,6 @@ export async function getFaqs(category?: string): Promise<SanityFaq[]> {
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
 export async function getPage(slug: string): Promise<SanityPage | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanityPage>(
     `*[_type == "page" && slug.current == $slug][0]{
       _id, title, slug, body,
@@ -131,7 +124,6 @@ export async function getPage(slug: string): Promise<SanityPage | null> {
 // ─── Site Settings ───────────────────────────────────────────────────────────
 
 export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanitySiteSettings>(
     `*[_type == "siteSettings" && _id == "siteSettings"][0]{
       _id, storeName, storeTagline, footerCopyright,
@@ -151,7 +143,6 @@ export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
 // ─── Team ────────────────────────────────────────────────────────────────────
 
 export async function getTeamMembers(): Promise<SanityTeamMember[]> {
-  if (!isSanityConfigured()) return [];
   return sanityClient.fetch<SanityTeamMember[]>(
     `*[_type == "teamMember"] | order(order asc) {
       _id, name, role, bio, order,
@@ -166,7 +157,6 @@ export async function getTeamMembers(): Promise<SanityTeamMember[]> {
 // ─── Testimonials ────────────────────────────────────────────────────────────
 
 export async function getTestimonials(featuredOnly = false): Promise<SanityTestimonial[]> {
-  if (!isSanityConfigured()) return [];
   const filter = featuredOnly
     ? `*[_type == "testimonial" && featured == true]`
     : `*[_type == "testimonial"]`;
@@ -183,7 +173,6 @@ export async function getTestimonials(featuredOnly = false): Promise<SanityTesti
 // ─── Redirects ───────────────────────────────────────────────────────────────
 
 export async function getRedirects(): Promise<SanityRedirect[]> {
-  if (!isSanityConfigured()) return [];
   return sanityClient.fetch<SanityRedirect[]>(
     `*[_type == "redirect"] { _id, source, destination, permanent }`,
     {},
@@ -194,7 +183,6 @@ export async function getRedirects(): Promise<SanityRedirect[]> {
 // ─── Landing Pages ───────────────────────────────────────────────────────────
 
 export async function getLandingPage(slug: string): Promise<SanityLandingPage | null> {
-  if (!isSanityConfigured()) return null;
   return sanityClient.fetch<SanityLandingPage>(
     `*[_type == "landingPage" && slug.current == $slug][0]{
       _id, title, slug, sections,
