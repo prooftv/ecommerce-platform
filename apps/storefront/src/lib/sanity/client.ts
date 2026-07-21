@@ -1,12 +1,12 @@
 import { createClient } from "@sanity/client";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset = process.env.SANITY_DATASET ?? "production";
+export const projectId = "52t49djs";
+export const dataset = process.env.SANITY_DATASET ?? "production";
 const apiVersion = "2024-01-01";
 
 export const sanityClient = createClient({
-  projectId: projectId ?? "unconfigured",
+  projectId,
   dataset,
   apiVersion,
   useCdn: process.env.NODE_ENV === "production",
@@ -23,5 +23,5 @@ export function urlFor(source: any) {
 }
 
 export function isSanityConfigured(): boolean {
-  return Boolean(projectId);
+  return true;
 }

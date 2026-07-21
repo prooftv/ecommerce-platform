@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import { getBlogPost } from "@/lib/sanity/queries";
+import { getBlogPost, getBlogPosts } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/client";
 import { buildCanonicalUrl } from "@/lib/seo";
 import { getStoreUrl } from "@/lib/store";
 
 interface Props {
   params: Promise<{ country: string; locale: string; slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const posts = await getBlogPosts(100);
+  return posts.map((p) => ({ slug: p.slug.current }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
