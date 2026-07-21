@@ -11,9 +11,13 @@ interface Props {
   params: Promise<{ country: string; locale: string; slug: string }>;
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const posts = await getBlogPosts(100);
-  return posts.map((p) => ({ slug: p.slug.current }));
+  const params = posts.map((p) => ({ slug: p.slug.current }));
+  // Cache Components requires at least one result; placeholder is caught by notFound() at runtime
+  return params.length > 0 ? params : [{ slug: "__placeholder__" }];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
