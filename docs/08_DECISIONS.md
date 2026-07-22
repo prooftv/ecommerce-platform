@@ -223,28 +223,33 @@ Cache semantics are preserved:
 
 **Principle applied:** Stable over experimental (see `03_DEVELOPMENT_GUIDE.md`).
 
-## ADR-013 — Shared packages are scaffolded but not yet wired as workspace dependencies
+## ADR-013 — Shared packages wired as workspace dependencies via pnpm monorepo root build
 
-**Decision:** `packages/types`, `packages/api-client`, `packages/config` exist in the monorepo but are not referenced as workspace dependencies by `apps/storefront`.
+**Decision:** `packages/types`, `packages/api-client`, `packages/config`, `packages/auth`, `packages/ui` are wired as `workspace:*` dependencies. Vercel builds from the monorepo root using pnpm.
 **Date:** 2025-07
-**Status:** Accepted (temporary)
+**Status:** Accepted
 
 **Reason:**
 
-Vercel builds `apps/storefront` using `npm install --prefix apps/storefront`, which resolves only the storefront's own `package.json`. It does not run `pnpm install` at the workspace root, so `workspace:*` dependencies do not resolve.
+`apps/operations` was scaffolded (Sprint 08), triggering the migration described in the original ADR-013. The Vercel build for `apps/storefront` was migrated to run `pnpm install` from the monorepo root so `workspace:*` dependencies resolve correctly.
 
-Wiring workspace packages requires either:
-- Migrating the Vercel build to use pnpm and run from the monorepo root, or
-- Publishing the packages to a registry
+**Build configuration (`apps/storefront/vercel.json`):**
+```json
+{
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && npx pnpm@9.15.9 install",
+  "buildCommand": "cd ../.. && npx pnpm@9.15.9 build:storefront"
+}
+```
 
-Neither is worth doing until `apps/operations` is scaffolded and actually needs to share code with `apps/storefront`.
+**Why `npx pnpm@9.15.9`:** Vercel's bundled pnpm 9.0.x has a `URLSearchParams` bug (`ERR_INVALID_THIS`) that causes all registry fetches to fail on Node 22. Pinning via `npx` bypasses the bundled version entirely.
+
+**Node version:** 22 LTS (set in Vercel project settings). Node 24 is not yet stable enough for the ecosystem.
 
 **Consequence:**
-- `apps/storefront/src/lib/sanity/types.ts` keeps its own copy of Sanity types
-- `packages/types/src/sanity.ts` is the future source of truth — kept in sync manually until the migration
-- `packages/api-client` is standalone scaffolding — not imported by any app yet
-
-**Migration trigger:** When `apps/operations` is scaffolded, migrate the Vercel build to pnpm workspace root and wire all packages properly at that point.
+- `apps/storefront` `package.json` lists all `@ecommerce/*` packages as `workspace:*` deps
+- `apps/storefront/src/lib/sanity/types.ts` remains a standalone copy until storefront imports are migrated to `@ecommerce/types` (non-breaking, tracked in backlog)
+- `apps/operations` consumes `@ecommerce/ui`, `@ecommerce/auth`, `@ecommerce/types`, `@ecommerce/api-client` directly
 
 ---
 

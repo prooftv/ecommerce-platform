@@ -66,6 +66,16 @@ Sanity (Phase 3)
 **Repo:** `prooftv/ecommerce-platform` (main branch)
 **Root Directory:** `apps/storefront`
 **Framework:** Next.js (auto-detected)
+**Node version:** 22.x
+
+### Build commands (set in `apps/storefront/vercel.json`)
+
+| Setting | Value |
+|---|---|
+| Install command | `cd ../.. && npx pnpm@9.15.9 install` |
+| Build command | `cd ../.. && npx pnpm@9.15.9 build:storefront` |
+
+> `npx pnpm@9.15.9` is required because Vercel's bundled pnpm 9.0.x has a `URLSearchParams` bug (`ERR_INVALID_THIS`) that breaks all registry fetches on Node 22. The `cd ../..` navigates to the monorepo root so `workspace:*` dependencies resolve.
 
 ### Environment variables
 
