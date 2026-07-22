@@ -21,6 +21,14 @@ import { schemaTypes } from "@/lib/sanity/schemas";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
+const previewSecret = process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET ?? "";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (typeof window !== "undefined" ? window.location.origin : "http://localhost:3001");
+
+function previewUrl(slug: string): string {
+  return `${siteUrl}/api/draft/enable?secret=${previewSecret}&slug=${slug}`;
+}
 
 const structure: StructureResolver = (S) =>
   S.list()
@@ -118,4 +126,30 @@ export default defineConfig({
     },
   },
   schema: { types: schemaTypes },
+  document: {
+    productionUrl: async (prev, { document: doc }) => {
+      const d = doc as Record<string, unknown>;
+      const slug =
+        d.slug && typeof d.slug === "object"
+          ? (d.slug as { current?: string }).current
+          : undefined;
+
+      switch (doc._type) {
+        case "homepage":
+          return previewUrl("/us/en");
+        case "blogPost":
+          return slug ? previewUrl(`/us/en/blog/${slug}`) : prev;
+        case "page":
+          return slug ? previewUrl(`/us/en/pages/${slug}`) : prev;
+        case "landingPage":
+          return slug ? previewUrl(`/us/en/lp/${slug}`) : prev;
+        case "faq":
+          return previewUrl("/us/en/faq");
+        case "siteSettings":
+          return previewUrl("/us/en");
+        default:
+          return prev;
+      }
+    },
+  },
 });
