@@ -207,8 +207,8 @@ export function CartDrawer() {
 
                         <div className="text-sm font-medium">
                           {item.compare_at_amount &&
-                          parseFloat(item.compare_at_amount) >
-                            parseFloat(item.price) ? (
+                          parseFloat(item.compare_at_amount ?? "0") >
+                            parseFloat(item.price ?? "0") ? (
                             <>
                               <span className="text-gray-400 line-through mr-2">
                                 {item.display_compare_at_amount}

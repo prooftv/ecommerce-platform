@@ -56,15 +56,15 @@ export function buildLineItems(order: Cart) {
   const currency = order.currency;
   const items: Array<{ name: string; amount: number }> = [];
 
-  const itemTotal = toCents(order.item_total, currency);
+  const itemTotal = toCents(order.item_total ?? "0", currency);
   items.push({ name: "Subtotal", amount: itemTotal });
 
-  const promoTotal = toCents(order.discount_total, currency);
+  const promoTotal = toCents(order.discount_total ?? "0", currency);
   if (promoTotal < 0) {
     items.push({ name: "Discount", amount: promoTotal });
   }
 
-  const additionalTaxTotal = toCents(order.additional_tax_total, currency);
+  const additionalTaxTotal = toCents(order.additional_tax_total ?? "0", currency);
   if (additionalTaxTotal > 0) {
     items.push({ name: "Tax", amount: additionalTaxTotal });
   }

@@ -106,7 +106,7 @@ export function PaymentSection({
     paymentMethods[0];
   const effectiveSelectedMethodId = selectedMethod?.id ?? "";
   // Zero-amount check
-  const amountDue = parseFloat(cart.amount_due ?? cart.total);
+  const amountDue = parseFloat(cart.amount_due ?? cart.total ?? "0");
   const isZeroAmount = amountDue === 0;
 
   // Free orders are always treated as non-session (no payment needed)

@@ -97,7 +97,7 @@ export async function getExample() {
 }
 ```
 
----
+--
 
 ## What not to do
 
