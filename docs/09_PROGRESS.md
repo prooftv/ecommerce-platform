@@ -116,13 +116,16 @@
 ✅ `packages/config` scaffolded — shared `typescript.json` and `biome.json`
 ✅ `packages/types` scaffolded — Sanity types (single source of truth), Spree primitives, Laravel Phase 1 contracts
 ✅ `packages/api-client` scaffolded — Sanity client wrapper, Spree SDK wrapper, Laravel client stub with all Phase 1 endpoints
-✅ `apps/storefront/src/lib/sanity/types.ts` converted to re-export from `@ecommerce/types/sanity`
+✅ `apps/storefront/src/lib/sanity/types.ts` reverted to own copy — workspace deps not yet wired (ADR-013)
 ✅ `docs/04_API_CONTRACTS.md` — Laravel section populated with agreed Phase 1 contracts
 ✅ `docs/04_API_CONTRACTS.md` — Sanity section corrected to reflect actual file locations
 ✅ `turbo.json` — `NEXT_PUBLIC_LARAVEL_API_URL`, `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` added to build env
+✅ Sanity Preview Mode — draft client, `/api/draft/enable`, `/api/draft/disable`, `PreviewBanner`, all content pages wired
+✅ ADR-013 documented — workspace packages are scaffolding only until `apps/operations` is built
 
 ### Next
-- [ ] Wire `@ecommerce/types` as workspace dependency in `apps/storefront` (install + update imports)
-- [ ] Sanity Preview Mode
+- [ ] Wire packages as workspace dependencies (trigger: when `apps/operations` is scaffolded — see ADR-013)
 - [ ] Phase 4: brand tokens + `packages/ui`
+- [ ] Upgrade Render to paid tier (eliminate cold starts)
+- [ ] Custom domain on Vercel
 

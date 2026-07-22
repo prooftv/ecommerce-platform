@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { PortableText } from "@portabletext/react";
 import { getFaqs } from "@/lib/sanity/queries";
 import { buildCanonicalUrl } from "@/lib/seo";
@@ -23,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function FaqPage() {
-  const faqs = await getFaqs();
+  const { isEnabled: isDraftMode } = await draftMode();
+  const faqs = await getFaqs(undefined, isDraftMode);
 
   const grouped = faqs.reduce<Record<string, SanityFaq[]>>((acc, faq) => {
     const key = faq.category ?? "General";

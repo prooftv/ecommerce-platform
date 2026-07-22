@@ -1,9 +1,11 @@
 import type { Category } from "@spree/sdk";
+import { draftMode } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { PreviewBanner } from "@/components/layout/PreviewBanner";
 import { getCategories } from "@/lib/data/categories";
 import { getSiteSettings } from "@/lib/sanity/queries";
 
@@ -41,6 +43,7 @@ export default async function StorefrontLayout({
 }: StorefrontLayoutProps) {
   const { country, locale } = await params;
   const basePath = `/${country}/${locale}`;
+  const { isEnabled: isDraftMode } = await draftMode();
 
   const [rootCategories, siteSettings] = await Promise.all([
     getCategories({ depth_eq: 0, expand: ["children.children"] })
@@ -49,7 +52,7 @@ export default async function StorefrontLayout({
         console.error("StorefrontLayout: failed to load categories", error);
         return [] as Category[];
       }),
-    getSiteSettings().catch(() => null),
+    getSiteSettings(isDraftMode).catch(() => null),
   ]);
 
   return (
@@ -75,6 +78,7 @@ export default async function StorefrontLayout({
         locale={locale as Locale}
         siteSettings={siteSettings}
       />
+      {isDraftMode && <PreviewBanner />}
     </>
   );
 }

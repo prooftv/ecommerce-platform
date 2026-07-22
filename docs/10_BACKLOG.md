@@ -22,7 +22,7 @@
 - [x] Sanity redirects fetched at build time in `next.config.ts`
 - [x] Configure Sanity environment variables on Vercel
 - [x] Add FAQ page route (`/faq`)
-- [ ] Implement Sanity Preview Mode (draft content in Studio)
+- [x] Implement Sanity Preview Mode (draft content in Studio)
 
 ---
 

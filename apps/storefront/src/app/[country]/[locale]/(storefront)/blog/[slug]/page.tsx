@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { getBlogPost, getBlogPosts } from "@/lib/sanity/queries";
@@ -52,7 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { country, locale, slug } = await params;
-  const post = await getBlogPost(slug);
+  const { isEnabled: isDraftMode } = await draftMode();
+  const post = await getBlogPost(slug, isDraftMode);
   if (!post) notFound();
 
   const storeUrl = getStoreUrl();

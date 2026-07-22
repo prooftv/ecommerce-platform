@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { getLandingPage } from "@/lib/sanity/queries";
 import { urlFor } from "@/lib/sanity/client";
@@ -41,7 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LandingPage({ params }: Props) {
   const { slug } = await params;
-  const page = await getLandingPage(slug);
+  const { isEnabled: isDraftMode } = await draftMode();
+  const page = await getLandingPage(slug, isDraftMode);
   if (!page) notFound();
 
   return (

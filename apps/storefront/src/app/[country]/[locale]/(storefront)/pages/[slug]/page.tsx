@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { getPage } from "@/lib/sanity/queries";
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CmsPage({ params }: Props) {
   const { slug } = await params;
-  const page = await getPage(slug);
+  const { isEnabled: isDraftMode } = await draftMode();
+  const page = await getPage(slug, isDraftMode);
   if (!page) notFound();
 
   return (

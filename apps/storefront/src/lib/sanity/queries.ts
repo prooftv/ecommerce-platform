@@ -1,4 +1,5 @@
 import { sanityClient } from "./client";
+import { draftClient } from "./preview";
 import type {
   SanityAnnouncementBar,
   SanityBlogPost,
@@ -13,10 +14,14 @@ import type {
   SanityRedirect,
 } from "./types";
 
+function client(isDraftMode = false) {
+  return isDraftMode ? draftClient : sanityClient;
+}
+
 // ─── Homepage ────────────────────────────────────────────────────────────────
 
-export async function getHomepage(): Promise<SanityHomepage | null> {
-  return sanityClient.fetch<SanityHomepage>(
+export async function getHomepage(isDraftMode = false): Promise<SanityHomepage | null> {
+  return client(isDraftMode).fetch<SanityHomepage>(
     `*[_type == "homepage" && _id == "homepage"][0]{
       _id,
       hero {
@@ -34,43 +39,44 @@ export async function getHomepage(): Promise<SanityHomepage | null> {
       seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
     }`,
     {},
-    { next: { revalidate: 60, tags: ["homepage"] } }
+    isDraftMode ? {} : { next: { revalidate: 60, tags: ["homepage"] } }
   );
 }
 
 // ─── Announcement bar ────────────────────────────────────────────────────────
 
-export async function getActiveAnnouncementBar(): Promise<SanityAnnouncementBar | null> {
+export async function getActiveAnnouncementBar(isDraftMode = false): Promise<SanityAnnouncementBar | null> {
   const now = new Date().toISOString();
-  return sanityClient.fetch<SanityAnnouncementBar>(
+  return client(isDraftMode).fetch<SanityAnnouncementBar>(
     `*[_type == "announcementBar" && active == true
       && (startsAt == null || startsAt <= $now)
       && (endsAt == null || endsAt >= $now)
     ] | order(_updatedAt desc) [0]`,
     { now },
-    { next: { revalidate: 60, tags: ["announcementBar"] } }
+    isDraftMode ? {} : { next: { revalidate: 60, tags: ["announcementBar"] } }
   );
 }
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
 
 export async function getNavigationMenu(
-  identifier: string
+  identifier: string,
+  isDraftMode = false
 ): Promise<SanityNavigationMenu | null> {
-  return sanityClient.fetch<SanityNavigationMenu>(
+  return client(isDraftMode).fetch<SanityNavigationMenu>(
     `*[_type == "navigationMenu" && identifier == $identifier][0]{
       _id, identifier,
       items[] { label, href, children[] { label, href } }
     }`,
     { identifier },
-    { next: { revalidate: 300, tags: ["navigation"] } }
+    isDraftMode ? {} : { next: { revalidate: 300, tags: ["navigation"] } }
   );
 }
 
 // ─── Blog ────────────────────────────────────────────────────────────────────
 
-export async function getBlogPosts(limit = 10): Promise<SanityBlogPost[]> {
-  return sanityClient.fetch<SanityBlogPost[]>(
+export async function getBlogPosts(limit = 10, isDraftMode = false): Promise<SanityBlogPost[]> {
+  return client(isDraftMode).fetch<SanityBlogPost[]>(
     `*[_type == "blogPost"] | order(publishedAt desc) [0...$limit] {
       _id, title, slug, publishedAt, excerpt, categories,
       author { name, image { ..., asset->{ _id, url }, alt } },
@@ -78,12 +84,12 @@ export async function getBlogPosts(limit = 10): Promise<SanityBlogPost[]> {
       seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
     }`,
     { limit },
-    { next: { revalidate: 60, tags: ["blog"] } }
+    isDraftMode ? {} : { next: { revalidate: 60, tags: ["blog"] } }
   );
 }
 
-export async function getBlogPost(slug: string): Promise<SanityBlogPost | null> {
-  return sanityClient.fetch<SanityBlogPost>(
+export async function getBlogPost(slug: string, isDraftMode = false): Promise<SanityBlogPost | null> {
+  return client(isDraftMode).fetch<SanityBlogPost>(
     `*[_type == "blogPost" && slug.current == $slug][0]{
       _id, title, slug, publishedAt, excerpt, categories, body,
       author { name, image { ..., asset->{ _id, url }, alt } },
@@ -91,40 +97,40 @@ export async function getBlogPost(slug: string): Promise<SanityBlogPost | null> 
       seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
     }`,
     { slug },
-    { next: { revalidate: 60, tags: [`blog:${slug}`] } }
+    isDraftMode ? {} : { next: { revalidate: 60, tags: [`blog:${slug}`] } }
   );
 }
 
 // ─── FAQs ────────────────────────────────────────────────────────────────────
 
-export async function getFaqs(category?: string): Promise<SanityFaq[]> {
+export async function getFaqs(category?: string, isDraftMode = false): Promise<SanityFaq[]> {
   const filter = category
     ? `*[_type == "faq" && category == $category]`
     : `*[_type == "faq"]`;
-  return sanityClient.fetch<SanityFaq[]>(
+  return client(isDraftMode).fetch<SanityFaq[]>(
     `${filter} | order(category asc, order asc) { _id, question, answer, category, order }`,
     { category },
-    { next: { revalidate: 300, tags: ["faqs"] } }
+    isDraftMode ? {} : { next: { revalidate: 300, tags: ["faqs"] } }
   );
 }
 
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
-export async function getPage(slug: string): Promise<SanityPage | null> {
-  return sanityClient.fetch<SanityPage>(
+export async function getPage(slug: string, isDraftMode = false): Promise<SanityPage | null> {
+  return client(isDraftMode).fetch<SanityPage>(
     `*[_type == "page" && slug.current == $slug][0]{
       _id, title, slug, body,
       seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
     }`,
     { slug },
-    { next: { revalidate: 300, tags: [`page:${slug}`] } }
+    isDraftMode ? {} : { next: { revalidate: 300, tags: [`page:${slug}`] } }
   );
 }
 
 // ─── Site Settings ───────────────────────────────────────────────────────────
 
-export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
-  return sanityClient.fetch<SanitySiteSettings>(
+export async function getSiteSettings(isDraftMode = false): Promise<SanitySiteSettings | null> {
+  return client(isDraftMode).fetch<SanitySiteSettings>(
     `*[_type == "siteSettings" && _id == "siteSettings"][0]{
       _id, storeName, storeTagline, footerCopyright,
       contactEmail, contactPhone, address,
@@ -136,7 +142,7 @@ export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
       schemaOrg { legalName, foundingYear, url }
     }`,
     {},
-    { next: { revalidate: 300, tags: ["siteSettings"] } }
+    isDraftMode ? {} : { next: { revalidate: 300, tags: ["siteSettings"] } }
   );
 }
 
@@ -182,13 +188,13 @@ export async function getRedirects(): Promise<SanityRedirect[]> {
 
 // ─── Landing Pages ───────────────────────────────────────────────────────────
 
-export async function getLandingPage(slug: string): Promise<SanityLandingPage | null> {
-  return sanityClient.fetch<SanityLandingPage>(
+export async function getLandingPage(slug: string, isDraftMode = false): Promise<SanityLandingPage | null> {
+  return client(isDraftMode).fetch<SanityLandingPage>(
     `*[_type == "landingPage" && slug.current == $slug][0]{
       _id, title, slug, sections,
       seo { title, description, ogImage { ..., asset->{ _id, url }, alt }, noIndex }
     }`,
     { slug },
-    { next: { revalidate: 60, tags: [`landingPage:${slug}`] } }
+    isDraftMode ? {} : { next: { revalidate: 60, tags: [`landingPage:${slug}`] } }
   );
 }
