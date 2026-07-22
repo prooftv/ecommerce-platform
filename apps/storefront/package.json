@@ -18,6 +18,11 @@
     "e2e:down": "docker compose -f e2e-backend/docker-compose.yml down -v"
   },
   "dependencies": {
+    "@ecommerce/api-client": "workspace:*",
+    "@ecommerce/auth": "workspace:*",
+    "@ecommerce/config": "workspace:*",
+    "@ecommerce/types": "workspace:*",
+    "@ecommerce/ui": "workspace:*",
     "@adyen/adyen-web": "^6.33.0",
     "@next/third-parties": "^16.1.6",
     "@paypal/react-paypal-js": "^9.1.1",

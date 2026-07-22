@@ -10,5 +10,10 @@
     "./spree": "./src/spree/index.ts",
     "./laravel": "./src/laravel/index.ts"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@ecommerce/types": "workspace:*",
+    "@sanity/client": "^7.24.0",
+    "@sanity/image-url": "^2.1.1",
+    "@spree/sdk": "^1.1.0"
+  }
 }

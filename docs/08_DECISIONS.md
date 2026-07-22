@@ -280,3 +280,37 @@ A single client that conditionally switches perspective creates risk of draft co
 - Preview is opt-in per request, not per deployment
 - Cache tags and revalidation are unaffected by preview activity
 
+---
+
+## ADR-015 — Authentication provider abstraction in `packages/auth`
+
+**Decision:** All authentication logic lives in `packages/auth`. Applications import `login()`, `logout()`, `getSession()`, `requireSession()` from this package. The underlying provider is an implementation detail.
+**Date:** 2025-07
+**Status:** Accepted
+
+**Reason:**
+
+The Operations Dashboard requires staff authentication separate from Spree customer authentication. Rather than coupling `apps/operations` directly to Laravel JWT, the auth interface is abstracted so the provider can change without touching application code.
+
+**Phase 1 provider:** Laravel — issues JWT access + refresh tokens via `/api/v1/auth/*`.
+
+**Interface (provider-agnostic):**
+```ts
+login(email, password)  →  { success, user } | { success: false, error }
+logout()                →  void
+getSession()            →  OperationsSession | null
+requireSession()        →  OperationsSession (redirects if unauthenticated)
+requireRole(role)       →  OperationsSession (redirects if insufficient role)
+```
+
+**Token storage:** httpOnly cookies (`ops_access_token`, `ops_refresh_token`). Separate cookie namespace from Spree customer tokens (`spree_access_token`). No token ever reaches the browser.
+
+**Session decoding:** JWT payload decoded client-side for expiry check only. Signature verification happens on the Laravel API on every authenticated request.
+
+**Provider swap:** To change from Laravel JWT to Sanctum, Passport, Auth0, or Keycloak — update `packages/auth/src/session.ts` only. `apps/operations` is unaffected.
+
+**Consequences:**
+- `apps/operations` has zero knowledge of the auth provider
+- `apps/storefront` Spree auth is unaffected — it uses `src/lib/spree/` directly (Spree-specific, not shared)
+- Future `apps/` can adopt the same auth package with a different provider implementation
+

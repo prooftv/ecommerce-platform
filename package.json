@@ -5,13 +5,15 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "turbo dev --filter=storefront",
-    "build": "npm install --prefix apps/storefront && turbo build --filter=storefront",
+    "dev:ops": "turbo dev --filter=operations",
+    "build": "turbo build",
+    "build:storefront": "turbo build --filter=storefront",
+    "build:operations": "turbo build --filter=operations",
     "lint": "turbo lint",
     "test": "turbo test --filter=storefront",
     "test:e2e": "turbo test:e2e --filter=storefront"
   },
   "devDependencies": {
-    "next": "^16",
     "turbo": "^2.5.4"
   }
 }

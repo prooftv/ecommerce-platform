@@ -110,7 +110,24 @@
 ✅ ADR-010 documented in `08_DECISIONS.md`
 ✅ Local-first development principle added to `03_DEVELOPMENT_GUIDE.md`
 
-## Sprint 07 — Shared Packages Foundation
+## Sprint 08 — Platform Foundation
+
+### Completed
+✅ pnpm workspaces wired — root `package.json` build scripts, `npm install --prefix` removed
+✅ `packages/types` — `operations.ts` added (`OperationsModule`, `OperationsNavItem`, `OperationsSession`)
+✅ `packages/api-client` — expanded to full domain modules: `spree/{products,orders,customers}`, `laravel/{auth,dashboard,reports,notifications}`, `sanity/{pages,blog,settings,faq}`
+✅ `packages/auth` — new package: `cookies.ts`, `session.ts` (Laravel provider), `guard.ts` (`requireSession`, `requireRole`)
+✅ `packages/ui` — new package: base components (`Button`, `Card`, `Badge`, `Input`, `Separator`, `Skeleton`), dashboard components (`MetricCard`, `PageHeader`, `StatusBadge`, `EmptyState`, `AppSidebar`)
+✅ `apps/operations` — scaffolded: routing, auth boundary, sidebar, header, login form, all module pages
+✅ ADR-015 — auth provider abstraction documented
+✅ `pnpm install` — all workspace deps resolve, operations type-checks clean
+
+### Next
+- [ ] Deploy `apps/operations` to Vercel (separate project, root directory `apps/operations`)
+- [ ] Wire `apps/storefront` imports to use `@ecommerce/types` and `@ecommerce/ui` where applicable
+- [ ] Phase 4: brand tokens applied to `packages/ui`
+- [ ] Laravel API live — wire `getDashboardSummary()` into overview page
+
 
 ### Completed
 ✅ `packages/config` scaffolded — shared `typescript.json` and `biome.json`
