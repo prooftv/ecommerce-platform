@@ -20,7 +20,18 @@
         "GTM_ID",
         "NEXT_PUBLIC_LARAVEL_API_URL",
         "NEXT_PUBLIC_SANITY_PROJECT_ID",
-        "NEXT_PUBLIC_SANITY_DATASET"
+        "NEXT_PUBLIC_SANITY_DATASET",
+        "SANITY_API_TOKEN",
+        "SANITY_PROJECT_ID",
+        "SANITY_PREVIEW_SECRET",
+        "CLOUDFLARE_ACCESS_KEY_ID",
+        "CLOUDFLARE_BUCKET",
+        "CLOUDFLARE_ENDPOINT",
+        "CLOUDFLARE_SECRET_ACCESS_KEY",
+        "RAILS_STORAGE",
+        "AWS_REGION",
+        "LARAVEL_API_URL",
+        "LARAVEL_API_SECRET"
       ]
     },
     "dev": {
