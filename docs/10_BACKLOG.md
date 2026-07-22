@@ -29,9 +29,9 @@
 ## Phase 4 — UI Customisation
 
 - [x] Scaffold `packages/config` — shared TypeScript and Biome configs
-- [x] Scaffold `packages/types` — Sanity types (single source of truth), Spree primitives, Laravel Phase 1 contracts
+- [x] Scaffold `packages/types` — Sanity types, Spree primitives, Laravel Phase 1 contracts
 - [x] Scaffold `packages/api-client` — Sanity client wrapper, Spree SDK wrapper, Laravel client stub
-- [ ] Wire `@ecommerce/types` as workspace dependency in `apps/storefront`
+- [ ] Wire packages as workspace dependencies (trigger: when `apps/operations` is scaffolded — see ADR-013)
 - [ ] Scaffold `packages/ui` with shared components (needs brand tokens — Phase 4 input)
 - [ ] Scaffold `packages/auth` (when `apps/operations` is scaffolded)
 

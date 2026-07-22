@@ -10,7 +10,5 @@
     "./spree": "./src/spree/index.ts",
     "./laravel": "./src/laravel/index.ts"
   },
-  "dependencies": {
-    "@ecommerce/types": "workspace:*"
-  }
+  "dependencies": {}
 }

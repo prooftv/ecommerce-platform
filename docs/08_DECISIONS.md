@@ -223,7 +223,26 @@ Cache semantics are preserved:
 
 **Principle applied:** Stable over experimental (see `03_DEVELOPMENT_GUIDE.md`).
 
-**Acceptance criteria for reintroduction of `use cache`:**
-- Feature exits experimental/canary status
-- `cacheComponents` no longer requires non-empty `generateStaticParams`
-- Measurable performance benefit over `unstable_cache` is demonstrated
+## ADR-013 — Shared packages are scaffolded but not yet wired as workspace dependencies
+
+**Decision:** `packages/types`, `packages/api-client`, `packages/config` exist in the monorepo but are not referenced as workspace dependencies by `apps/storefront`.
+**Date:** 2025-07
+**Status:** Accepted (temporary)
+
+**Reason:**
+
+Vercel builds `apps/storefront` using `npm install --prefix apps/storefront`, which resolves only the storefront's own `package.json`. It does not run `pnpm install` at the workspace root, so `workspace:*` dependencies do not resolve.
+
+Wiring workspace packages requires either:
+- Migrating the Vercel build to use pnpm and run from the monorepo root, or
+- Publishing the packages to a registry
+
+Neither is worth doing until `apps/operations` is scaffolded and actually needs to share code with `apps/storefront`.
+
+**Consequence:**
+- `apps/storefront/src/lib/sanity/types.ts` keeps its own copy of Sanity types
+- `packages/types/src/sanity.ts` is the future source of truth — kept in sync manually until the migration
+- `packages/api-client` is standalone scaffolding — not imported by any app yet
+
+**Migration trigger:** When `apps/operations` is scaffolded, migrate the Vercel build to pnpm workspace root and wire all packages properly at that point.
+
