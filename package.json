@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": "22.x",
+    "pnpm": "9.15.9"
+  },
   "scripts": {
     "dev": "turbo dev --filter=storefront",
     "dev:ops": "turbo dev --filter=operations",

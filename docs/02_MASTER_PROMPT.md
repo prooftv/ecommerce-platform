@@ -99,8 +99,8 @@ export async function getExample() {
 
 ### Build & tooling
 - pnpm 9.15.9 is the required package manager. Never use npm or yarn in the monorepo.
-- Vercel builds run from the monorepo root via `npx pnpm@9.15.9` — do not change `apps/storefront/vercel.json` install/build commands without understanding the pnpm version pin.
-- Node 22 LTS is the target runtime. Do not upgrade to Node 24 without testing.
+- Vercel builds use `npx pnpm@9.15.9 install` and `npx pnpm@9.15.9 build:<app>`. Vercel runs these from the repo root automatically when Root Directory is set to a subdirectory. Do not add `cd ../..` to these commands.
+- Node 22 LTS is the target runtime. `engines.node` is set to `22.x` in root `package.json`. Do not upgrade to Node 24 without testing.
 - All Spree SDK monetary fields (`total`, `discount_total`, `tax_total`, etc.) are typed `string | null`. Always use `?? "0"` or `?? ""` fallbacks before passing to `parseFloat()` or i18n `t()` calls.
 
 

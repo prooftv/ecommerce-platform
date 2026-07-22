@@ -56,13 +56,11 @@ In the new project: **Settings → General → Build & Development Settings** �
 
 | Setting | Value |
 |---|---|
-| **Install Command** | `cd ../.. && npx pnpm@9.15.9 install` |
-| **Build Command** | `cd ../.. && npx pnpm@9.15.9 build:operations` |
+| **Install Command** | `npx pnpm@9.15.9 install` |
+| **Build Command** | `npx pnpm@9.15.9 build:operations` |
 | **Output Directory** | *(leave blank — Next.js default)* |
 
-**Why these commands:**
-- `cd ../..` — moves from `apps/operations/` to the monorepo root where `pnpm-workspace.yaml` lives, so all `workspace:*` packages resolve
-- `npx pnpm@9.15.9` — Vercel's bundled pnpm 9.0.x has a bug that breaks all registry fetches on Node 22; this pins the correct version without needing corepack
+**Why `npx pnpm@9.15.9`** — Vercel's bundled pnpm 9.0.x has a bug that breaks all registry fetches on Node 22. This pins the correct version without needing corepack. Vercel runs the install command from the **repo root** (not from `apps/operations`) when Root Directory is set to a subdirectory — so no `cd` is needed.
 
 ---
 

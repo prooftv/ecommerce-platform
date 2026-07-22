@@ -72,10 +72,10 @@ Sanity (Phase 3)
 
 | Setting | Value |
 |---|---|
-| Install command | `cd ../.. && npx pnpm@9.15.9 install` |
-| Build command | `cd ../.. && npx pnpm@9.15.9 build:storefront` |
+| Install command | `npx pnpm@9.15.9 install` |
+| Build command | `npx pnpm@9.15.9 build:storefront` |
 
-> `npx pnpm@9.15.9` is required because Vercel's bundled pnpm 9.0.x has a `URLSearchParams` bug (`ERR_INVALID_THIS`) that breaks all registry fetches on Node 22. The `cd ../..` navigates to the monorepo root so `workspace:*` dependencies resolve.
+> `npx pnpm@9.15.9` is required because Vercel's bundled pnpm 9.0.x has a `URLSearchParams` bug (`ERR_INVALID_THIS`) that breaks all registry fetches on Node 22. Vercel runs the install command from the **repo root** when Root Directory is set to a subdirectory — no `cd` needed.
 
 ### Environment variables
 
