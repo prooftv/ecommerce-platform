@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     "./typescript": "./typescript.json",
-    "./biome": "./biome.json"
+    "./biome": "./biome.json",
+    "./site": "./site.ts"
   }
 }

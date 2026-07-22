@@ -14,9 +14,7 @@ export const draftClient = createClient({
 });
 
 export function getPreviewSecret(): string {
-  const secret =
-    process.env.SANITY_PREVIEW_SECRET ??
-    process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET;
+  const secret = process.env.SANITY_PREVIEW_SECRET;
   if (!secret) throw new Error("SANITY_PREVIEW_SECRET is not set");
   return secret;
 }

@@ -246,3 +246,37 @@ Neither is worth doing until `apps/operations` is scaffolded and actually needs 
 
 **Migration trigger:** When `apps/operations` is scaffolded, migrate the Vercel build to pnpm workspace root and wire all packages properly at that point.
 
+---
+
+## ADR-014 — Published and draft Sanity content use isolated clients
+
+**Decision:** Two separate Sanity clients. `sanityClient` (published, CDN) for all production renders. `draftClient` (previewDrafts, no CDN) only when Next.js draft mode is active.
+**Date:** 2025-07
+**Status:** Accepted
+
+**Reason:**
+
+A single client that conditionally switches perspective creates risk of draft content leaking into production renders through caching or misconfiguration. Separate clients make the boundary explicit and auditable.
+
+**Published client** (`src/lib/sanity/client.ts`):
+- `perspective: "published"`
+- `useCdn: true` in production
+- No token required for public content
+- Next.js fetch cache with `revalidate` and `tags`
+
+**Draft client** (`src/lib/sanity/preview.ts`):
+- `perspective: "previewDrafts"`
+- `useCdn: false` — always hits live API
+- Requires `SANITY_API_TOKEN` with read access
+- Cache disabled — `{}` options passed to every fetch
+
+**Activation:** Next.js `draftMode()` cookie, set by `/api/draft/enable` after validating `SANITY_PREVIEW_SECRET`.
+
+**Security principle:** `SANITY_PREVIEW_SECRET` is server-side only. It is never prefixed `NEXT_PUBLIC_`. The `productionUrl` resolver in `sanity.config.ts` runs in the Next.js server context — the secret is injected at that point and never shipped to the browser.
+
+**Consequences:**
+- Published site can never accidentally query drafts
+- CDN remains active for all production traffic
+- Preview is opt-in per request, not per deployment
+- Cache tags and revalidation are unaffected by preview activity
+

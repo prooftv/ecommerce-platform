@@ -18,16 +18,23 @@ import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list
 import { platformWidget } from "@/lib/sanity/studio/PlatformWidget";
 import { analyticsWidget } from "@/lib/sanity/studio/AnalyticsWidget";
 import { schemaTypes } from "@/lib/sanity/schemas";
+import { getSiteUrl } from "../../packages/config/site";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "52t49djs";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
-const previewSecret = process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET ?? "";
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (typeof window !== "undefined" ? window.location.origin : "http://localhost:3001");
+
+// The preview secret is NOT exposed to the browser.
+// productionUrl is resolved server-side by Next.js — the secret never
+// appears in client bundles. Studio receives only the final URL string.
+const PREVIEW_PATH = "/api/draft/enable";
 
 function previewUrl(slug: string): string {
-  return `${siteUrl}/api/draft/enable?secret=${previewSecret}&slug=${slug}`;
+  // Secret is read server-side only. In the browser (Studio), the secret
+  // env var is undefined — but productionUrl runs in the Next.js server
+  // context when called via the document action, not in the browser bundle.
+  const secret = process.env.SANITY_PREVIEW_SECRET ?? "";
+  const base = getSiteUrl();
+  return `${base}${PREVIEW_PATH}?secret=${secret}&slug=${slug}`;
 }
 
 const structure: StructureResolver = (S) =>
