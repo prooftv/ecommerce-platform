@@ -42,22 +42,63 @@
 
 ## Laravel API
 
-To be documented when Mzo publishes the API spec.
-All Laravel endpoints will be consumed via `packages/api-client/src/laravel.ts`.
+**Base URL:** `NEXT_PUBLIC_LARAVEL_API_URL/api/v1`
+**Auth:** Bearer token (issued by Laravel, stored in httpOnly cookie)
+**Client:** `packages/api-client/src/laravel/client.ts`
+**Types:** `packages/types/src/laravel.ts`
+
+### Auth
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/auth/login` | POST | Issue access + refresh tokens |
+| `/api/v1/auth/refresh` | POST | Rotate access token |
+| `/api/v1/auth/logout` | POST | Revoke token |
+
+### Dashboard
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/dashboard/summary` | GET | Aggregated KPIs for operations dashboard |
+
+### Reporting
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/reports/orders` | GET | Order counts and revenue by date range |
+| `/api/v1/reports/revenue` | GET | Gross / refunds / net by date range |
+
+### Notifications
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/notifications` | GET | Paginated notification list |
+| `/api/v1/notifications/:id/read` | PATCH | Mark notification as read |
+
+**Status:** Stub — endpoint paths and response shapes are agreed. Implementation pending (Mzo).
+**Response envelope:** See `LaravelSuccessResponse<T>` and `LaravelPaginatedResponse<T>` in `packages/types/src/laravel.ts`.
 
 ---
 
 ## Sanity
 
-| Content type | GROQ query location | Consumer |
-|---|---|---|
-| Homepage | `sanity/queries/homepage.ts` | `apps/storefront` |
-| Hero banners | `sanity/queries/hero.ts` | `apps/storefront` |
-| Blog posts | `sanity/queries/blog.ts` | `apps/storefront` |
-| FAQs | `sanity/queries/faqs.ts` | `apps/storefront` |
-| Marketing pages | `sanity/queries/pages.ts` | `apps/storefront` |
+| Content type | Consumer |
+|---|---|
+| Homepage | `apps/storefront` |
+| Announcement bar | `apps/storefront` |
+| Navigation menus | `apps/storefront` |
+| Blog posts | `apps/storefront` |
+| FAQs | `apps/storefront` |
+| CMS pages | `apps/storefront` |
+| Landing pages | `apps/storefront` |
+| Site settings | `apps/storefront` |
+| Team members | `apps/storefront` |
+| Testimonials | `apps/storefront` |
+| Redirects | `apps/storefront` (build-time, `next.config.ts`) |
 
-See [06_SANITY_MODEL.md](./06_SANITY_MODEL.md) for schema definitions.
+All GROQ queries: `apps/storefront/src/lib/sanity/queries.ts`
+Canonical query reference: `docs/15_GROQ_QUERIES.md`
+Schema definitions: `docs/06_SANITY_MODEL.md`
 
 ---
 

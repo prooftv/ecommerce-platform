@@ -110,7 +110,19 @@
 ✅ ADR-010 documented in `08_DECISIONS.md`
 ✅ Local-first development principle added to `03_DEVELOPMENT_GUIDE.md`
 
+## Sprint 07 — Shared Packages Foundation
+
+### Completed
+✅ `packages/config` scaffolded — shared `typescript.json` and `biome.json`
+✅ `packages/types` scaffolded — Sanity types (single source of truth), Spree primitives, Laravel Phase 1 contracts
+✅ `packages/api-client` scaffolded — Sanity client wrapper, Spree SDK wrapper, Laravel client stub with all Phase 1 endpoints
+✅ `apps/storefront/src/lib/sanity/types.ts` converted to re-export from `@ecommerce/types/sanity`
+✅ `docs/04_API_CONTRACTS.md` — Laravel section populated with agreed Phase 1 contracts
+✅ `docs/04_API_CONTRACTS.md` — Sanity section corrected to reflect actual file locations
+✅ `turbo.json` — `NEXT_PUBLIC_LARAVEL_API_URL`, `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` added to build env
+
 ### Next
-- [ ] FAQ page route (`/faq`)
+- [ ] Wire `@ecommerce/types` as workspace dependency in `apps/storefront` (install + update imports)
 - [ ] Sanity Preview Mode
-- [ ] Phase 4: UI customisation via `packages/ui`
+- [ ] Phase 4: brand tokens + `packages/ui`
+

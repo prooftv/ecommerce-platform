@@ -1,0 +1,13 @@
+{
+  "name": "@ecommerce/types",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./sanity": "./src/sanity.ts",
+    "./spree": "./src/spree.ts",
+    "./laravel": "./src/laravel.ts"
+  }
+}

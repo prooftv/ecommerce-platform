@@ -28,14 +28,12 @@
 
 ## Phase 4 — UI Customisation
 
-- [ ] Define client brand tokens (colours, typography, spacing)
-- [ ] Apply tokens to `apps/storefront/src/app/globals.css`
-- [ ] Scaffold `packages/ui` with shared components
-- [ ] Migrate reusable components from storefront to `packages/ui`
-- [ ] Apply client design to product listing page
-- [ ] Apply client design to product detail page
-- [ ] Apply client design to cart and checkout
-- [ ] Apply client design to account pages
+- [x] Scaffold `packages/config` — shared TypeScript and Biome configs
+- [x] Scaffold `packages/types` — Sanity types (single source of truth), Spree primitives, Laravel Phase 1 contracts
+- [x] Scaffold `packages/api-client` — Sanity client wrapper, Spree SDK wrapper, Laravel client stub
+- [ ] Wire `@ecommerce/types` as workspace dependency in `apps/storefront`
+- [ ] Scaffold `packages/ui` with shared components (needs brand tokens — Phase 4 input)
+- [ ] Scaffold `packages/auth` (when `apps/operations` is scaffolded)
 
 ---
 
