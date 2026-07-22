@@ -163,13 +163,13 @@ export default function CartPage() {
                 <dt className="text-gray-500">{tc("subtotal")}</dt>
                 <dd className="text-gray-900">{cart.display_item_total}</dd>
               </div>
-              {cart.discount_total && parseFloat(cart.discount_total) < 0 && (
+              {cart.discount_total && parseFloat(cart.discount_total ?? "0") < 0 && (
                 <div className="flex justify-between text-green-600">
                   <dt>{tc("discount")}</dt>
                   <dd>{cart.display_discount_total}</dd>
                 </div>
               )}
-              {cart.delivery_total && parseFloat(cart.delivery_total) > 0 && (
+              {cart.delivery_total && parseFloat(cart.delivery_total ?? "0") > 0 && (
                 <div className="flex justify-between">
                   <dt className="text-gray-500">{tc("shipping")}</dt>
                   <dd className="text-gray-900">
@@ -177,7 +177,7 @@ export default function CartPage() {
                   </dd>
                 </div>
               )}
-              {cart.tax_total && parseFloat(cart.tax_total) > 0 && (
+              {cart.tax_total && parseFloat(cart.tax_total ?? "0") > 0 && (
                 <div className="flex justify-between">
                   <dt className="text-gray-500">{tc("tax")}</dt>
                   <dd className="text-gray-900">{cart.display_tax_total}</dd>
@@ -192,13 +192,13 @@ export default function CartPage() {
                 </dd>
               </div>
 
-              {cart.gift_card && parseFloat(cart.gift_card_total) > 0 ? (
+              {cart.gift_card && parseFloat(cart.gift_card_total ?? "0") > 0 ? (
                 <div className="flex justify-between text-green-600">
                   <dt>{t("giftCard")}</dt>
                   <dd>-{cart.display_gift_card_total}</dd>
                 </div>
               ) : cart.store_credit_total &&
-                parseFloat(cart.store_credit_total) > 0 ? (
+                parseFloat(cart.store_credit_total ?? "0") > 0 ? (
                 <div className="flex justify-between text-green-600">
                   <dt>{t("storeCredit")}</dt>
                   <dd>-{cart.display_store_credit_total}</dd>
@@ -207,7 +207,7 @@ export default function CartPage() {
 
               {cart.amount_due &&
                 cart.amount_due !== cart.total &&
-                parseFloat(cart.amount_due) > 0 && (
+                parseFloat(cart.amount_due ?? "0") > 0 && (
                   <div className="border-t pt-4 flex justify-between">
                     <dt className="text-lg font-medium text-gray-900">
                       {t("amountDue")}
@@ -220,7 +220,7 @@ export default function CartPage() {
             </dl>
 
             <div className="mt-6 space-y-3">
-              {parseFloat(cart.total) > 0 && (
+              {parseFloat(cart.total ?? "0") > 0 && (
                 <ExpressCheckoutButton
                   cart={cart}
                   basePath={basePath}

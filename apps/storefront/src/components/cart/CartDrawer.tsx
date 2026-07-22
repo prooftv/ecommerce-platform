@@ -244,7 +244,7 @@ export function CartDrawer() {
                     <span>{cart?.display_item_total}</span>
                   </div>
                   {cart?.discount_total &&
-                    parseFloat(cart.discount_total) < 0 && (
+                    parseFloat(cart.discount_total ?? "0") < 0 && (
                       <div className="flex justify-between items-center text-sm text-green-600">
                         <span>{tc("discount")}</span>
                         <span>{cart.display_discount_total}</span>
@@ -261,7 +261,7 @@ export function CartDrawer() {
             )}
 
             {/* Express Checkout — must stay mounted during processing */}
-            {cart && parseFloat(cart.total) > 0 && (
+            {cart && parseFloat(cart.total ?? "0") > 0 && (
               <ExpressCheckoutButton
                 cart={cart}
                 basePath={basePath}

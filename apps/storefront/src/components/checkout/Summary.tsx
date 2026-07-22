@@ -68,7 +68,7 @@ export function Summary({ cart }: SummaryProps) {
           )}
         </div>
 
-        {cart.discount_total && parseFloat(cart.discount_total) !== 0 && (
+        {cart.discount_total && parseFloat(cart.discount_total ?? "0") !== 0 && (
           <div className="flex justify-between text-sm">
             <span className="text-gray-700">{tc("discount")}</span>
             <span className="text-green-700">
@@ -77,7 +77,7 @@ export function Summary({ cart }: SummaryProps) {
           </div>
         )}
 
-        {parseFloat(cart.tax_total) > 0 && (
+        {parseFloat(cart.tax_total ?? "0") > 0 && (
           <div className="flex justify-between text-sm">
             <span className="text-gray-700">{tc("tax")}</span>
             <span className="text-gray-900">{cart.display_tax_total}</span>
@@ -101,7 +101,7 @@ export function Summary({ cart }: SummaryProps) {
 
         {/* Gift card or store credit — shown below total, reduces amount due.
             Gift cards use store credits under the hood, so only show one. */}
-        {cart.gift_card && parseFloat(cart.gift_card_total) > 0 ? (
+        {cart.gift_card && parseFloat(cart.gift_card_total ?? "0") > 0 ? (
           <div className="flex justify-between text-sm">
             <span className="text-gray-700">{tc("giftCard")}</span>
             <span className="text-green-700">
@@ -109,7 +109,7 @@ export function Summary({ cart }: SummaryProps) {
             </span>
           </div>
         ) : cart.store_credit_total &&
-          parseFloat(cart.store_credit_total) > 0 ? (
+          parseFloat(cart.store_credit_total ?? "0") > 0 ? (
           <div className="flex justify-between text-sm">
             <span className="text-gray-700">{tc("storeCredit")}</span>
             <span className="text-green-700">
@@ -121,7 +121,7 @@ export function Summary({ cart }: SummaryProps) {
         {/* Amount due — only shown when gift card or store credit is applied */}
         {cart.amount_due &&
           cart.amount_due !== cart.total &&
-          parseFloat(cart.amount_due) > 0 && (
+          parseFloat(cart.amount_due ?? "0") > 0 && (
             <div className="flex justify-between items-baseline pt-2 border-t border-gray-200">
               <span className="text-base font-bold text-gray-900">
                 {tc("amountDue")}
