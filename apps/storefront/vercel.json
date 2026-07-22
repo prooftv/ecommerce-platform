@@ -1,5 +1,5 @@
 {
   "framework": "nextjs",
-  "installCommand": "cd ../.. && pnpm install",
+  "installCommand": "npm install -g pnpm@9.15.9 && cd ../.. && pnpm install",
   "buildCommand": "cd ../.. && pnpm build:storefront"
 }
